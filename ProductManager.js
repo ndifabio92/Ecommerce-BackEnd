@@ -94,11 +94,11 @@ class ProductManager {
 
   async createFile() {
     try {
+      await fs.readFile(this.path, { encoding: 'utf-8' });
+      return 'El archivo ya se encuentra creado';
+    } catch (error) {
       await fs.writeFile(this.path, '[]',);
       return 'Archivo creado con exito';
-
-    } catch (error) {
-      return error;
     }
   }
 
