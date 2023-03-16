@@ -16,7 +16,6 @@ class ProductManager {
       if (!title || !description || !price || !thumbnail || !code || !stock) throw new Error('Todos los campos son obligatorios');
 
       const isExist = this.getProductExists('code', code);
-
       if (isExist) throw new Error(`El codigo: ${code} ingresado ya existe`);
 
       this.#products.push({
@@ -32,6 +31,22 @@ class ProductManager {
       await fs.writeFile(this.path, JSON.stringify(this.#products));
 
       return `Producto creado con exito`;
+
+    } catch (error) {
+      return error;
+    }
+  }
+
+  async getLastId() {
+    try {
+      let lastId = this.#nextId;
+      const data = await this.getProducts();
+      for (let i = 0; i < data.length; i++) {
+        if (data[i].id > lastId) {
+          lastId = data[i].id
+        }
+      }
+      return lastId + 1;
 
     } catch (error) {
       return error;
@@ -95,6 +110,8 @@ class ProductManager {
   async createFile() {
     try {
       await fs.readFile(this.path, { encoding: 'utf-8' });
+      await this.loadProducts();
+      this.#nextId = await this.getLastId();
       return 'El archivo ya se encuentra creado';
     } catch (error) {
       await fs.writeFile(this.path, '[]',);
