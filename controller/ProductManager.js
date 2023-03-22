@@ -1,4 +1,4 @@
-const fs = require('fs').promises;
+import * as fs from 'fs/promises';
 
 class ProductManager {
 
@@ -56,24 +56,27 @@ class ProductManager {
   async getProducts() {
     // return this.#products;
     try {
-      const data = await fs.readFile(this.path, { encoding: 'utf-8' });
-      return JSON.parse(data)
+      // const data = await fs.readFile(this.path, { encoding: 'utf-8' });
+      const data = await this.readFile();
+      return JSON.parse(data);
 
     } catch (error) {
-      return error;
+      return { message: error.toString() }
     }
   }
 
-  getProductById(id) {
+  async getProductById(id) {
     try {
-      const product = this.#products.find(product => product.id === id);
+      // const product = this.#products.find(product => product.id === id);
+      const data = await this.readFile();
+      const product = JSON.parse(data).find(product => product.id === id);
 
-      if (!product) throw new Error("Not Found");
+      if (!product) throw new Error("El producto no existe");
 
       return product;
 
     } catch (error) {
-      return error;
+      return { message: error.toString() }
     }
   }
 
@@ -119,6 +122,16 @@ class ProductManager {
     }
   }
 
+  async readFile() {
+    try {
+      const data = await fs.readFile(this.path, { encoding: 'utf-8' });
+      return data;
+
+    } catch (error) {
+      return error;
+    }
+  }
+
   async loadProducts() {
     try {
       this.#products = await this.getProducts();
@@ -128,54 +141,56 @@ class ProductManager {
   }
 }
 
-const item = {
-  title: 'producto prueba',
-  description: 'Este es un producto prueba',
-  price: 200,
-  thumbnail: 'Sin imagen',
-  code: 'abc123',
-  stock: 25
-};
+export default ProductManager;
 
-const item2 = {
-  title: 'producto prueba2',
-  description: 'Este es un producto prueba2',
-  price: 150,
-  thumbnail: 'Sin imagen',
-  code: 'abc456',
-  stock: 2
-};
+// const item = {
+//   title: 'producto prueba',
+//   description: 'Este es un producto prueba',
+//   price: 200,
+//   thumbnail: 'Sin imagen',
+//   code: 'abc123',
+//   stock: 25
+// };
 
-const item3 = {
-  title: 'producto prueba3',
-  description: 'Este es un producto prueba3',
-  price: 100,
-  thumbnail: 'Sin imagen',
-  code: 'abc789',
-  stock: 3
-};
+// const item2 = {
+//   title: 'producto prueba2',
+//   description: 'Este es un producto prueba2',
+//   price: 150,
+//   thumbnail: 'Sin imagen',
+//   code: 'abc456',
+//   stock: 2
+// };
 
-const updateItem = {
-  id: 3,
-  title: 'producto actualizado',
-  description: 'Este es un producto actualizdo',
-  price: 12093810391,
-  thumbnail: 'Con Imagen',
-  code: 'ccc195',
-  stock: 25
-};
+// const item3 = {
+//   title: 'producto prueba3',
+//   description: 'Este es un producto prueba3',
+//   price: 100,
+//   thumbnail: 'Sin imagen',
+//   code: 'abc789',
+//   stock: 3
+// };
+
+// const updateItem = {
+//   id: 3,
+//   title: 'producto actualizado',
+//   description: 'Este es un producto actualizdo',
+//   price: 12093810391,
+//   thumbnail: 'Con Imagen',
+//   code: 'ccc195',
+//   stock: 25
+// };
 
 
-const main = async () => {
-  const product = new ProductManager();
-  console.log(await product.createFile());
-  await product.loadProducts();
-  console.log(await product.addProduct(item));
-  console.log(await product.addProduct(item2));
-  console.log(await product.addProduct(item3));
-  console.log(await product.addProduct(item));
-  console.log(await product.deleteProductById(2));
-  console.log(await product.updateProductById(updateItem))
+// const main = async () => {
+//   const product = new ProductManager();
+//   console.log(await product.createFile());
+//   await product.loadProducts();
+//   console.log(await product.addProduct(item));
+//   console.log(await product.addProduct(item2));
+//   console.log(await product.addProduct(item3));
+//   console.log(await product.addProduct(item));
+//   console.log(await product.deleteProductById(2));
+//   console.log(await product.updateProductById(updateItem))
 
-}
-main();
+// }
+// main();
