@@ -3,37 +3,42 @@ import * as fs from 'fs/promises';
 class ProductManager {
 
   #nextId
-  #products
 
   constructor() {
     this.#nextId = 1;
-    this.#products = [];
-    this.path = './products.json'
+    this.path = './products.json';
   }
 
-  async addProduct({ title, description, price, thumbnail, code, stock }) {
+  async addProduct({ title, description, price, thumbnail, code, stock, category }) {
     try {
-      if (!title || !description || !price || !thumbnail || !code || !stock) throw new Error('Todos los campos son obligatorios');
+      if (!title || !description || !code || !price || !stock || !category) throw new Error('Todos los campos son obligatorios');
 
-      const isExist = this.getProductExists('code', code);
-      if (isExist) throw new Error(`El codigo: ${code} ingresado ya existe`);
+      const arrProducts = await this.getProducts();
+      const isExist = await this.getProductExists('code', code);
 
-      this.#products.push({
+      if (isExist) {
+        this.#nextId = this.#nextId - 1;
+        throw new Error(`El codigo: ${code} ingresado ya existe`);
+      }
+
+      arrProducts.push({
         id: this.#nextId++,
         title,
         description,
-        price,
-        thumbnail,
         code,
-        stock
+        price,
+        status: true,
+        stock,
+        category,
+        thumbnail,
       });
 
-      await fs.writeFile(this.path, JSON.stringify(this.#products));
+      await fs.writeFile(this.path, JSON.stringify(arrProducts));
 
-      return `Producto creado con exito`;
+      return { message: `Producto creado con exito` };
 
     } catch (error) {
-      return error;
+      throw { error: error.toString() };
     }
   }
 
@@ -43,31 +48,30 @@ class ProductManager {
       const data = await this.getProducts();
       for (let i = 0; i < data.length; i++) {
         if (data[i].id > lastId) {
-          lastId = data[i].id
+          lastId = data[i].id;
         }
       }
+
       return lastId + 1;
-
-    } catch (error) {
-      return error;
-    }
-  }
-
-  async getProducts() {
-    // return this.#products;
-    try {
-      // const data = await fs.readFile(this.path, { encoding: 'utf-8' });
-      const data = await this.readFile();
-      return JSON.parse(data);
 
     } catch (error) {
       throw { error: error.toString() };
     }
   }
 
+  async getProducts() {
+    try {
+      const data = await this.readFile();
+      return JSON.parse(data);
+
+    } catch (error) {
+      throw error;
+    }
+  }
+
   async getProductById(id) {
     try {
-      // const product = this.#products.find(product => product.id === id);
+
       const data = await this.readFile();
       const product = JSON.parse(data).find(product => product.id === id);
 
@@ -80,40 +84,44 @@ class ProductManager {
     }
   }
 
-  async updateProductById(obj) {
+  // async updateProductById(obj) {
+  //   try {
+  //     this.#products = this.#products.map(item => item.id === obj.id ? { ...item, ...obj } : item)
+  //     await fs.writeFile(this.path, JSON.stringify(this.#products));
+  //     return `Producto ID: ${obj.id} actualizado con exito`;
+
+  //   } catch (error) {
+  //     return error;
+  //   }
+
+  // }
+
+  // async deleteProductById(id) {
+  //   try {
+  //     const isExist = this.getProductExists('id', id);
+  //     if (!isExist) throw new Error(`No se encontro el id: ${id} para eliminar.`);
+
+  //     this.#products = this.#products.filter(product => product.id !== id);
+  //     await fs.writeFile(this.path, JSON.stringify(this.#products));
+  //     return `Producto ID: ${id} eliminado con exito`;
+
+  //   } catch (error) {
+  //     return error;
+  //   }
+  // }
+
+  async getProductExists(key, value) {
     try {
-      this.#products = this.#products.map(item => item.id === obj.id ? { ...item, ...obj } : item)
-      await fs.writeFile(this.path, JSON.stringify(this.#products));
-      return `Producto ID: ${obj.id} actualizado con exito`;
-
+      const data = await this.getProducts();
+      return data.find(product => product[key] === value);
     } catch (error) {
-      return error;
+      throw error;
     }
-
-  }
-
-  async deleteProductById(id) {
-    try {
-      const isExist = this.getProductExists('id', id);
-      if (!isExist) throw new Error(`No se encontro el id: ${id} para eliminar.`);
-
-      this.#products = this.#products.filter(product => product.id !== id);
-      await fs.writeFile(this.path, JSON.stringify(this.#products));
-      return `Producto ID: ${id} eliminado con exito`;
-
-    } catch (error) {
-      return error;
-    }
-  }
-
-  getProductExists(key, value) {
-    return this.#products.find(product => product[key] === value);
   }
 
   async createFile() {
     try {
       await fs.readFile(this.path, { encoding: 'utf-8' });
-      await this.loadProducts();
       this.#nextId = await this.getLastId();
       return 'El archivo ya se encuentra creado';
     } catch (error) {
@@ -127,15 +135,7 @@ class ProductManager {
       const data = await fs.readFile(this.path, { encoding: 'utf-8' });
       return data;
     } catch (error) {
-      throw error
-    }
-  }
-
-  async loadProducts() {
-    try {
-      this.#products = await this.getProducts();
-    } catch (error) {
-      return error;
+      throw error;
     }
   }
 }

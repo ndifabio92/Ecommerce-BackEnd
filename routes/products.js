@@ -1,5 +1,5 @@
 import { Router } from "express";
-import ProductManager from "../controller/ProductManager.js";
+import ProductManager from "../controller/productManager.js";
 
 const productManager = new ProductManager();
 const router = Router();
@@ -25,5 +25,16 @@ router.get('/:pid', async (req, res) => {
         res.status(404).send(error);
     }
 });
+
+router.post('/', async (req, res) => {
+    try {
+        const { body } = req;
+        await productManager.createFile();
+        const result = await productManager.addProduct(body);
+        res.send(result);
+    } catch (error) {
+        res.status(500).send(error);
+    }
+})
 
 export default router;
