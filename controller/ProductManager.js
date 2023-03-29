@@ -61,7 +61,7 @@ class ProductManager {
       return JSON.parse(data);
 
     } catch (error) {
-      return { message: error.toString() }
+      throw { error: error.toString() };
     }
   }
 
@@ -76,7 +76,7 @@ class ProductManager {
       return product;
 
     } catch (error) {
-      return { message: error.toString() }
+      throw { error: error.toString() };
     }
   }
 
@@ -126,9 +126,8 @@ class ProductManager {
     try {
       const data = await fs.readFile(this.path, { encoding: 'utf-8' });
       return data;
-
     } catch (error) {
-      return error;
+      throw error
     }
   }
 
@@ -142,55 +141,3 @@ class ProductManager {
 }
 
 export default ProductManager;
-
-// const item = {
-//   title: 'producto prueba',
-//   description: 'Este es un producto prueba',
-//   price: 200,
-//   thumbnail: 'Sin imagen',
-//   code: 'abc123',
-//   stock: 25
-// };
-
-// const item2 = {
-//   title: 'producto prueba2',
-//   description: 'Este es un producto prueba2',
-//   price: 150,
-//   thumbnail: 'Sin imagen',
-//   code: 'abc456',
-//   stock: 2
-// };
-
-// const item3 = {
-//   title: 'producto prueba3',
-//   description: 'Este es un producto prueba3',
-//   price: 100,
-//   thumbnail: 'Sin imagen',
-//   code: 'abc789',
-//   stock: 3
-// };
-
-// const updateItem = {
-//   id: 3,
-//   title: 'producto actualizado',
-//   description: 'Este es un producto actualizdo',
-//   price: 12093810391,
-//   thumbnail: 'Con Imagen',
-//   code: 'ccc195',
-//   stock: 25
-// };
-
-
-// const main = async () => {
-//   const product = new ProductManager();
-//   console.log(await product.createFile());
-//   await product.loadProducts();
-//   console.log(await product.addProduct(item));
-//   console.log(await product.addProduct(item2));
-//   console.log(await product.addProduct(item3));
-//   console.log(await product.addProduct(item));
-//   console.log(await product.deleteProductById(2));
-//   console.log(await product.updateProductById(updateItem))
-
-// }
-// main();

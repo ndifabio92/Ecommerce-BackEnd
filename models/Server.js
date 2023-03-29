@@ -1,5 +1,5 @@
 import express from 'express';
-import router from '../routes/products.js';
+import { products } from '../routes/index.js'
 
 class Server {
 
@@ -11,13 +11,13 @@ class Server {
         this.routes();
     }
 
-
     middlewares() {
         this.app.use(express.urlencoded({ extended: true }));
     }
     routes() {
-        this.app.use('', router);
+        this.app.use('/api/products', products);
     }
+
     listen() {
         this.app.listen(this.port, () => {
             console.log(`Servidor corriendo en el puerto ${this.port}`);
