@@ -31,7 +31,6 @@ router.post('/:cid/product/:pid', async (req, res) => {
         const result = await shoppingCart.addProductToCartById(Number(cid), Number(pid))
         res.send(result);
     } catch (error) {
-        console.log(error)
         res.status(500).send(error);
     }
 })

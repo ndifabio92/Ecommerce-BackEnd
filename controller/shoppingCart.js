@@ -30,19 +30,17 @@ class ShoppingCart {
     async addProductToCartById(cid, pid) {
         try {
             const arrCarts = await this.getShoppingCart();
+            const cart = arrCarts.find(item => item.id === cid);
+            if (!cart) throw new Error('El id de carrito no existe');
 
-            arrCarts.map(item => {
-                if (item.id === cid) {
-                    const product = item.products.find(item => item.id === pid);
-                    product ? product.quantity += 1 : item.products = [...item.products, { id: pid, quantity: 1 }];
-                }
-            });
+            const product = cart.products.find(item => item.id === pid);
+            product ? product.quantity += 1 : item.products = [...item.products, { id: pid, quantity: 1 }];
 
             await fs.writeFile(this.path, JSON.stringify(arrCarts));
 
             return { message: `El producto se a agregado correctamente` };
         } catch (error) {
-            throw error;
+            throw { error: error.message };
         }
     }
 
