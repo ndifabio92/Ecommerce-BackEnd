@@ -1,5 +1,5 @@
 import express from 'express';
-import { products } from '../routes/index.js'
+import { products, shoppingCart } from '../routes/index.js'
 
 class Server {
 
@@ -17,6 +17,7 @@ class Server {
     }
     routes() {
         this.app.use('/api/products', products);
+        this.app.use('/api/carts', shoppingCart);
     }
 
     listen() {
