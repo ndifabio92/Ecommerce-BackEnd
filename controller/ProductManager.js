@@ -38,7 +38,7 @@ class ProductManager {
       return { message: `Producto creado con exito` };
 
     } catch (error) {
-      throw { error: error.toString() };
+      throw { error: error.message };
     }
   }
 
@@ -55,7 +55,7 @@ class ProductManager {
       return lastId + 1;
 
     } catch (error) {
-      throw { error: error.toString() };
+      throw { error: error.message };
     }
   }
 
@@ -80,35 +80,43 @@ class ProductManager {
       return product;
 
     } catch (error) {
-      throw { error: error.toString() };
+      throw { error: error.message };
     }
   }
 
-  // async updateProductById(obj) {
-  //   try {
-  //     this.#products = this.#products.map(item => item.id === obj.id ? { ...item, ...obj } : item)
-  //     await fs.writeFile(this.path, JSON.stringify(this.#products));
-  //     return `Producto ID: ${obj.id} actualizado con exito`;
+  async updateProductById(obj, id) {
+    try {
+      const isExist = await this.getProductExists('id', id);
+      if (!isExist) throw new Error(`No se encontro el id ${id} para modificar.`);
 
-  //   } catch (error) {
-  //     return error;
-  //   }
+      const data = await this.getProducts();
 
-  // }
+      const result = data.map(item => item.id === obj.id ? { ...item, ...obj } : item);
+      await fs.writeFile(this.path, JSON.stringify(result));
+      return { message: `Producto ID ${obj.id} actualizado con exito` };
 
-  // async deleteProductById(id) {
-  //   try {
-  //     const isExist = this.getProductExists('id', id);
-  //     if (!isExist) throw new Error(`No se encontro el id: ${id} para eliminar.`);
+    } catch (error) {
+      throw { error: error.message };
+    }
 
-  //     this.#products = this.#products.filter(product => product.id !== id);
-  //     await fs.writeFile(this.path, JSON.stringify(this.#products));
-  //     return `Producto ID: ${id} eliminado con exito`;
+  }
 
-  //   } catch (error) {
-  //     return error;
-  //   }
-  // }
+  async deleteProductById(id) {
+    try {
+      const isExist = await this.getProductExists('id', id);
+      if (!isExist) throw new Error(`No se encontro el id: ${id} para eliminar.`);
+
+      const data = await this.getProducts();
+
+      const result = data.filter(product => product.id !== id);
+      await fs.writeFile(this.path, JSON.stringify(result));
+
+      return { message: `Producto ID ${id} eliminado con exito` }
+
+    } catch (error) {
+      throw { error: error.message };
+    }
+  }
 
   async getProductExists(key, value) {
     try {
