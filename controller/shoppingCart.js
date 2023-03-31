@@ -34,7 +34,7 @@ class ShoppingCart {
             if (!cart) throw new Error('El id de carrito no existe');
 
             const product = cart.products.find(item => item.id === pid);
-            product ? product.quantity += 1 : item.products = [...item.products, { id: pid, quantity: 1 }];
+            product ? product.quantity += 1 : cart.products = [...cart.products, { id: pid, quantity: 1 }];
 
             await fs.writeFile(this.path, JSON.stringify(arrCarts));
 
