@@ -20,5 +20,16 @@
     "stock": 25,
     "category": "categoria1",
     "thumbnail": ["path1", "path2"]
+  },
+  {
+    "id": 4,
+    "title": "producto prueba",
+    "description": "Este es un producto prueba",
+    "code": "abc30",
+    "price": 200,
+    "status": true,
+    "stock": 25,
+    "category": "categoria1",
+    "thumbnail": ["path1", "path2"]
   }
 ]

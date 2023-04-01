@@ -9,7 +9,7 @@ class ProductManager {
     this.path = './products.json';
   }
 
-  async addProduct({ title, description, price, thumbnail, code, stock, category }) {
+  async addProduct({ title, description, price, thumbnail = null, code, stock, category }) {
     try {
       if (!title || !description || !code || !price || !stock || !category) throw new Error('Todos los campos son obligatorios');
 
