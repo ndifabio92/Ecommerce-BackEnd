@@ -1,5 +1,15 @@
 import * as fs from 'fs/promises';
 
+const typeProduct = {
+  title: "string",
+  description: "string",
+  code: "string",
+  price: "number",
+  stock: "number",
+  category: "string",
+  status: "boolean",
+};
+
 class ProductManager {
 
   #nextId
@@ -9,9 +19,11 @@ class ProductManager {
     this.path = './products.json';
   }
 
-  async addProduct({ title, description, price, thumbnail = null, code, stock, category }) {
+  async addProduct({ title, description, price, thumbnail = null, code, stock, category, status }) {
     try {
       if (!title || !description || !code || !price || !stock || !category) throw new Error('Todos los campos son obligatorios');
+
+      if (!(typeof title === typeProduct.title) || !(typeof description === typeProduct.description) || !(typeof code === typeProduct.code) || !(typeof price === typeProduct.price) || !(typeof stock === typeProduct.stock) || !(typeof category === typeProduct.category) || !(typeof status === typeProduct.status)) throw new Error('Los tipos de datos son incorrectos');
 
       const arrProducts = await this.getProducts();
       const isExist = await this.getProductExists('code', code, arrProducts);
@@ -27,7 +39,7 @@ class ProductManager {
         description,
         code,
         price,
-        status: true,
+        status,
         stock,
         category,
         thumbnail,
