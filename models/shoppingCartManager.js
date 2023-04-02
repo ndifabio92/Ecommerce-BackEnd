@@ -1,4 +1,5 @@
 import * as fs from 'fs/promises';
+import ProductManager from './productManager.js';
 
 class ShoppingCartManager {
     #nextId;
@@ -11,6 +12,8 @@ class ShoppingCartManager {
     async addCart(shoppingCart) {
         try {
             if (!shoppingCart) throw new Error('El carrito de compras no puede estar vacio');
+
+            await this.getProductById(shoppingCart);
 
             const arrCarts = await this.getShoppingCart();
             const addCart = [...arrCarts, {
@@ -66,6 +69,17 @@ class ShoppingCartManager {
 
         } catch (error) {
             throw { error: error.message };
+        }
+    }
+
+    async getProductById(arrProducts) {
+        try {
+            const product = new ProductManager();
+            for (const item of arrProducts) {
+                await product.getProductById(item.id);
+            }
+        } catch (error) {
+            throw error;
         }
     }
 
