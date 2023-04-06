@@ -23,7 +23,7 @@ class ShoppingCartManager {
 
             await fs.writeFile(this.path, JSON.stringify(addCart));
 
-            return { message: `Carrito de compras creado con exito` };
+            return {message: `Carrito de compras creado con exito`};
 
         } catch (error) {
             throw error;
@@ -37,13 +37,13 @@ class ShoppingCartManager {
             if (!cart) throw new Error('El id de carrito no existe');
 
             const product = cart.products.find(item => item.id === pid);
-            product ? product.quantity += 1 : cart.products = [...cart.products, { id: pid, quantity: 1 }];
+            product ? product.quantity += 1 : cart.products = [...cart.products, {id: pid, quantity: 1}];
 
             await fs.writeFile(this.path, JSON.stringify(arrCarts));
 
-            return { message: `El producto se a agregado correctamente` };
+            return {message: `El producto se a agregado correctamente`};
         } catch (error) {
-            throw { error: error.message };
+            throw {error: error.message};
         }
     }
 
@@ -68,7 +68,7 @@ class ShoppingCartManager {
             return products.products;
 
         } catch (error) {
-            throw { error: error.message };
+            throw {error: error.message};
         }
     }
 
@@ -85,7 +85,7 @@ class ShoppingCartManager {
 
     async createFile() {
         try {
-            await fs.readFile(this.path, { encoding: 'utf-8' });
+            await fs.readFile(this.path, {encoding: 'utf-8'});
             this.#nextId = await this.getLastId();
             return 'El archivo ya se encuentra creado';
         } catch (error) {
@@ -96,8 +96,7 @@ class ShoppingCartManager {
 
     async readFile() {
         try {
-            const data = await fs.readFile(this.path, { encoding: 'utf-8' });
-            return data;
+            return await fs.readFile(this.path, {encoding: 'utf-8'});
         } catch (error) {
             throw error;
         }

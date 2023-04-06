@@ -1,11 +1,11 @@
-import { request, response } from "express";
+import {request, response} from "express";
 import ShoppingCartManager from "../models/shoppingCartManager.js";
 
 const shoppingCart = new ShoppingCartManager();
 
 export const getCartById = async (req = request, res = response) => {
     try {
-        const { cid } = req.params;
+        const {cid} = req.params;
         const data = await shoppingCart.getProductByShoppingCartId(Number(cid));
         res.send(data);
     } catch (error) {
@@ -15,7 +15,7 @@ export const getCartById = async (req = request, res = response) => {
 
 export const postCart = async (req = request, res = response) => {
     try {
-        const { body } = req;
+        const {body} = req;
         await shoppingCart.createFile();
         const result = await shoppingCart.addCart(body);
         res.send(result);
@@ -26,7 +26,7 @@ export const postCart = async (req = request, res = response) => {
 
 export const postProductByCartId = async (req = request, res = response) => {
     try {
-        const { cid, pid } = req.params;
+        const {cid, pid} = req.params;
         const result = await shoppingCart.addProductToCartById(Number(cid), Number(pid))
         res.send(result);
     } catch (error) {

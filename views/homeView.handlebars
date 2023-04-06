@@ -1,0 +1,30 @@
+<div>
+    <h1>{{{ title }}} </h1>
+    <hr/>
+    <table>
+        <tr>
+            <td>Id</td>
+            <td>Title</td>
+            <td>Description</td>
+            <td>Code</td>
+            <td>Price</td>
+            <td>Status</td>
+            <td>Stock</td>
+            <td>Category</td>
+            <td>Thumbnail</td>
+        </tr>
+        {{#each listProducts}}
+            <tr>
+                <td>{{id}}</td>
+                <td>{{title}}</td>
+                <td>{{description}}</td>
+                <td>{{code}}</td>
+                <td>{{price}}</td>
+                <td>{{status}}</td>
+                <td>{{stock}}</td>
+                <td>{{category}}</td>
+                <td>{{thumbnail}}</td>
+            </tr>
+        {{/each}}
+    </table>
+</div>
