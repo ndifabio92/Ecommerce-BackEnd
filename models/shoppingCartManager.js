@@ -11,7 +11,12 @@ class ShoppingCartManager {
 
     async addCart(shoppingCart) {
         try {
-            if (!shoppingCart) throw new Error('El carrito de compras no puede estar vacio');
+            if (shoppingCart.length === 0) throw new Error('El carrito de compras no puede estar vacio');
+
+            const keyRequired = ['id', 'quantity'];
+            const isCorrect = shoppingCart.every(obj => keyRequired.every(key => obj.hasOwnProperty(key) && typeof obj[key] === "number"));
+
+            if (!isCorrect) throw new Error('El carrito de compras no tiene productos cargados o el formato del producto es incorrecto');
 
             await this.getProductById(shoppingCart);
 
@@ -26,7 +31,7 @@ class ShoppingCartManager {
             return {message: `Carrito de compras creado con exito`};
 
         } catch (error) {
-            throw error;
+            throw {error: error.message};
         }
     }
 

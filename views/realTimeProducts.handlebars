@@ -1,6 +1,12 @@
 <div>
     <h1>{{title}}</h1>
     <hr/>
+    <p>
+        Server Status:
+        <span id="lblOnline">Online</span>
+        <span id="lblOffline">Offline</span>
+    </p>
+
     <table id="table">
         <tr>
             <td>Id</td>
@@ -34,10 +40,25 @@
     import {io} from "https://cdn.socket.io/4.3.2/socket.io.esm.min.js";
 
     const socket = io();
+    const lblOnline = document.querySelector('#lblOnline');
+    const lblOffline = document.querySelector('#lblOffline');
 
     socket.on('connect', () => {
-        console.log('cliente front');
+        console.log('Conectado Cliente');
+        lblOffline.style.display = 'none';
+        lblOnline.style.display = '';
+        lblOnline.style.color = 'green';
+
     });
+
+    socket.on('disconnect', () => {
+        console.log('Desconectado del servidor');
+        lblOnline.style.display = 'none';
+        lblOffline.style.display = '';
+        lblOffline.style.color = 'red';
+
+    });
+
 
     socket.on('productCreated', product => {
         const row = `
