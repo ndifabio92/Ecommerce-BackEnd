@@ -1,5 +1,5 @@
 import {request, response} from "express";
-import ProductManager from "../models/productManager.js";
+import ProductManager from "../../models/productManager.js";
 
 export const realTimeProducts = async (req = request, res = response) => {
     try {

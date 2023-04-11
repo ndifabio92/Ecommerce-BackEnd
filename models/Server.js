@@ -29,7 +29,7 @@ class Server {
         this.app.use('/', home);
         this.app.use('/api/products', products);
         this.app.use('/api/carts', shoppingCart);
-        this.app.use('/api/realtimeproducts', realTimeProducts);
+        this.app.use('/realtimeproducts', realTimeProducts);
     }
 
     views() {
