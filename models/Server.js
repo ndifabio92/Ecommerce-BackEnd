@@ -1,9 +1,9 @@
 import express from 'express';
 import {createServer} from "http";
 import {Server as serverIO} from "socket.io";
-import {engine} from "express-handlebars";
+// import {engine} from "express-handlebars";
 import {resolve} from 'path';
-import {home, products, shoppingCart, realTimeProducts} from '../routes/index.js';
+import {products, shoppingCart} from '../routes/index.js';
 import socketController from "../controller/sockets/controller.js";
 
 class Server {
@@ -26,21 +26,21 @@ class Server {
     }
 
     routes() {
-        this.app.use('/', home);
         this.app.use('/api/products', products);
         this.app.use('/api/carts', shoppingCart);
-        this.app.use('/realtimeproducts', realTimeProducts);
+        // this.app.use('/', home);
+        // this.app.use('/realtimeproducts', realTimeProducts);
     }
 
-    views() {
-        this.app.engine('handlebars', engine({
-            layoutsDir: `${this.viewsPath}/layouts`,
-            defaultLayout: `${this.viewsPath}/layouts/main.handlebars`
-        }));
-        this.app.set('view engine', 'handlebars');
-        this.app.set('views', this.viewsPath);
-
-    }
+    // views() {
+    //     this.app.engine('handlebars', engine({
+    //         layoutsDir: `${this.viewsPath}/layouts`,
+    //         defaultLayout: `${this.viewsPath}/layouts/main.handlebars`
+    //     }));
+    //     this.app.set('view engine', 'handlebars');
+    //     this.app.set('views', this.viewsPath);
+    //
+    // }
 
     sockets() {
         this.io.on('connection', socketController);
