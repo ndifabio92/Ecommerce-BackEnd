@@ -1,13 +1,11 @@
 import {request, response} from "express";
-import ShoppingCartManager from "../models/shoppingCartManager.js";
-
-const shoppingCart = new ShoppingCartManager();
+import Cart from "../models/shoppingCartManager.js";
 
 export const getCartById = async (req = request, res = response) => {
     try {
         const {cid} = req.params;
-        const data = await shoppingCart.getProductByShoppingCartId(Number(cid));
-        res.send(data);
+        const result = await Cart.findById(cid);
+        res.send(result);
     } catch (error) {
         res.status(404).send(error);
     }
@@ -16,9 +14,9 @@ export const getCartById = async (req = request, res = response) => {
 export const postCart = async (req = request, res = response) => {
     try {
         const {body} = req;
-        await shoppingCart.createFile();
-        const result = await shoppingCart.addCart(body);
-        res.send(result);
+        const cart = new Cart(body);
+        await cart.save();
+        res.send({msg: "Carrito de compra creado", cart});
     } catch (error) {
         res.status(500).send(error);
     }
@@ -27,9 +25,13 @@ export const postCart = async (req = request, res = response) => {
 export const postProductByCartId = async (req = request, res = response) => {
     try {
         const {cid, pid} = req.params;
-        const result = await shoppingCart.addProductToCartById(Number(cid), Number(pid))
+        const cart = await Cart.findById(cid);
+        const product = cart.products.find(item => item.id === pid);
+        product ? product.quantity += 1 : cart.products = [...cart.products, {_id: pid, quantity: 1}];
+        // const result = await shoppingCart.addProductToCartById(Number(cid), Number(pid));
+        const result = await Cart.findByIdAndUpdate(cid, cart, {new: true});
         res.send(result);
     } catch (error) {
         res.status(500).send(error);
     }
-}
+};

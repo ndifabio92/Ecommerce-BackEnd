@@ -1,37 +1,32 @@
 import {request, response} from "express";
-import ProductManager from "../models/productManager.js";
-
-const productManager = new ProductManager();
+import Product from "../models/productManager.js";
 
 export const getProducts = async (req = request, res = response) => {
     try {
         const {limit} = req.query;
-        const data = await productManager.getProducts();
-        const result = limit ? data.slice(0, Number(limit)) : data;
+        const result = await Product.find().limit(Number(limit));
         res.send(result);
     } catch (error) {
-        res.status(404).send(error);
+        res.status(500).send(error);
     }
 };
 
 export const getProductById = async (req = request, res = response) => {
     try {
         const {pid} = req.params;
-        const result = await productManager.getProductById(Number(pid));
+        const result = await Product.findById(pid);
         res.send(result);
     } catch (error) {
-        res.status(404).send(error);
+        res.status(500).send(error);
     }
 };
 
 export const postProduct = async (req = request, res = response) => {
     try {
         const {body} = req;
-        await productManager.createFile();
-        const result = await productManager.addProduct(body);
-        const io = req.app.get("io");
-        io.emit('productCreated', result.product);
-        res.send(result);
+        const product = new Product(body);
+        await product.save();
+        res.status(201).send({msg: "Producto creado", product});
     } catch (error) {
         res.status(500).send(error);
     }
@@ -40,22 +35,20 @@ export const postProduct = async (req = request, res = response) => {
 export const putProduct = async (req = request, res = response) => {
     try {
         const {pid} = req.params;
-        const {body} = req;
-        const result = await productManager.updateProductById(body, Number(pid));
-        res.send(result);
+        const {_id, ...rest} = req.body;
+        const result = await Product.findByIdAndUpdate(pid, rest, {new: true});
+        res.send({msg: "Producto actualizado", result});
     } catch (error) {
-        res.status(404).send(error);
+        res.status(500).send(error);
     }
 };
 
 export const deleteProduct = async (req = request, res = response) => {
     try {
         const {pid} = req.params;
-        const result = await productManager.deleteProductById(Number(pid));
-        const io = req.app.get("io");
-        io.emit("productRemoved", pid);
-        res.send(result);
+        const result = await Product.findByIdAndDelete(pid, {new: true});
+        res.send({msg: "Producto eliminado", result});
     } catch (error) {
-        res.status(404).send(error);
+        res.status(500).send(error);
     }
 }
