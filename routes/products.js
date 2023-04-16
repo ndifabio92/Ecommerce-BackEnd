@@ -28,7 +28,7 @@ router.put('/:pid', [
     check('pid').custom(productExist),
     check('title', 'El titulo es obligatorio').notEmpty(),
     check('description', 'La descripcion es obligatorio').notEmpty(),
-    check('code', 'El codigo es obligatorio').notEmpty().custom(codeExist),
+    check('code', 'El codigo es obligatorio').notEmpty(),
     check('stock', 'El stock es obligatorio').notEmpty(),
     check('category', 'La categoria es obligatorio').notEmpty(),
     inputsValidation
