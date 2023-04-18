@@ -2,7 +2,7 @@ FROM --platform=$BUILDPLATFORM node:18.16-alpine3.17
 
 WORKDIR /app
 
-COPY .. .
+COPY . .
 
 RUN npm install
 
