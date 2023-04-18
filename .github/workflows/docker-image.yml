@@ -49,7 +49,7 @@ jobs:
           DOCKER_HUB: ${{ secrets.DOCKER_HUB }}
         run: |
           docker buildx build -t $DOCKER_HUB:$NEW_VERSION .
-          docker push $DOCKER_HUB:latest .
+          docker buildx build -t $DOCKER_HUB:latest .
 
       - name: Push Docker Image
         env:
