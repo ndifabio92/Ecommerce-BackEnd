@@ -2,7 +2,7 @@ name: Docker Image CI
 
 on:
   push:
-#     branches: [ "master" ]
+    branches: [ "master" ]
   pull_request:
     branches: [ "master" ]
 
@@ -13,51 +13,52 @@ jobs:
     runs-on: ubuntu-latest
     
     steps:
-    
-    - name: Set up Docker Buildx Multiplatform
-      run: |
-        sudo docker buildx version
-        sudo docker buildx create --platform linux/amd64,linux/arm64 --use
-        
-    - name: Git Semantic Version
-      uses: PaulHatch/semantic-version@v5.0.3
-      with:
-        major_pattern: "major:"
-        minor_pattern: "feature:"
-        format: "${major}.${minor}.${patch}-prerelease${increment}"
-      id: version
-          
-    - name: Checkout code
-      uses: actions/checkout@v3
-      with:
-        fetch-depth: 0
-        
-    - name: Docker login
-      env:
-        DOCKER_USER: ${{ secrets.DOCKER_USER }}
-        DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
 
-      run: |
-        echo "Iniciando Login"
-        docker login -u $DOCKER_USER -p $DOCKER_PASSWORD
-        echo "Fin del Login"
-        
-    
-    - name: Build Docker Image
-      env:
-        NEW_VERSION: ${{ steps.version.outputs.version }}
-        DOCKER_HUB: ${{ secrets.DOCKER_HUB }}
-      run: |
-        docker buildx build -t $DOCKER_HUB:$NEW_VERSION .
-      
-    - name: Push Docker Image
-      env:
-        NEW_VERSION: ${{ steps.version.outputs.version }}
-        DOCKER_HUB: ${{ secrets.DOCKER_HUB }}
-      run: |
-        docker push $DOCKER_HUB:$NEW_VERSION
-        docker push $DOCKER_HUB:latest
-        
+      - name: Set up Docker Buildx Multiplatform
+        run: |
+          sudo docker buildx version
+          sudo docker buildx create --platform linux/amd64,linux/arm64 --use
+
+      - name: Git Semantic Version
+        uses: PaulHatch/semantic-version@v5.0.3
+        with:
+          major_pattern: "major:"
+          minor_pattern: "feature:"
+          format: "${major}.${minor}.${patch}-prerelease${increment}"
+        id: version
+
+      - name: Checkout code
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - name: Docker login
+        env:
+          DOCKER_USER: ${{ secrets.DOCKER_USER }}
+          DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
+
+        run: |
+          echo "Iniciando Login"
+          docker login -u $DOCKER_USER -p $DOCKER_PASSWORD
+          echo "Fin del Login"
+
+
+      - name: Build Docker Image
+        env:
+          NEW_VERSION: ${{ steps.version.outputs.version }}
+          DOCKER_HUB: ${{ secrets.DOCKER_HUB }}
+        run: |
+          docker buildx build -t $DOCKER_HUB:$NEW_VERSION .
+          docker push $DOCKER_HUB:latest .
+
+      - name: Push Docker Image
+        env:
+          NEW_VERSION: ${{ steps.version.outputs.version }}
+          DOCKER_HUB: ${{ secrets.DOCKER_HUB }}
+        run: |
+          docker push $DOCKER_HUB:$NEW_VERSION
+          docker push $DOCKER_HUB:latest
+
 #     - name: Build the Docker image
 #       run: docker build . --file Dockerfile --tag my-image-name:$(date +%s)
 
