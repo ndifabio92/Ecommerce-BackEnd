@@ -28,7 +28,7 @@ jobs:
       env:
         DOCKER_USER: ${{ secrets.DOCKER_USER }}
         DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
-        DOCKER_HUB: ${{ secrets.DOCKER_HUB }}
+
       run: |
         echo "Iniciando Login"
         docker login -u $DOCKER_USER -p $DOCKER_PASSWORD
@@ -37,11 +37,11 @@ jobs:
     
     - name: Build Docker Image
       run: |
-        docker buildx build -t $DOCKER_HUB:1.0.1 .
+        docker buildx build -t ndifabio/ecommerce-server:1.0.1 .
       
     - name: Push Docker Image
       run: |
-        docker push $DOCKER_HUB:1.0.1 .
+        docker push ndifabio/ecommerce-server:1.0.1 .
         
 #     - name: Build the Docker image
 #       run: docker build . --file Dockerfile --tag my-image-name:$(date +%s)
