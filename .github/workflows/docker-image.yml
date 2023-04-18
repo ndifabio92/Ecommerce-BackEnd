@@ -56,7 +56,7 @@ jobs:
         DOCKER_HUB: ${{ secrets.DOCKER_HUB }}
       run: |
         docker push $DOCKER_HUB:$NEW_VERSION
-        docker push $DOCKER_HUB:$latest
+        docker push $DOCKER_HUB:latest
         
 #     - name: Build the Docker image
 #       run: docker build . --file Dockerfile --tag my-image-name:$(date +%s)
