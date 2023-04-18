@@ -1,0 +1,43 @@
+version: "3"
+
+services:
+  ecommerceDB:
+    container_name: ${MONGO_DB_NAME}
+    image: mongo:6.0
+    volumes:
+      - app-vol:/data/db
+    restart: always
+  #    environment:
+  #      MONGO_INITDB_ROOT_USERNAME: admin
+  #      MONGO_INITDB_ROOT_PASSWORD: pass
+  #    command: [ "--auth" ]
+  
+  mongo-express:
+    depends_on:
+      - ecommerceDB
+    image: mongo-express:1.0.0-alpha.4
+    ports:
+      - 8080:8081
+    restart: always
+    environment:
+      #      ME_CONFIG_MONGODB_ADMINUSERNAME: admin
+      #      ME_CONFIG_MONGODB_ADMINPASSWORD: pass
+      ME_CONFIG_MONGODB_SERVER: ${MONGO_DB_NAME}
+
+  ecommerceBack:
+    depends_on:
+      - ecommerceDB
+      - mongo-express
+    container_name: "ecommerce-server"
+    image: ndifabio/ecommerce-server:1.0.0
+    ports:
+      - 8000:8000
+    environment:
+      MONGO_DB_URI: mongodb://ecommerceDB:27017/
+      MONGO_DB_NAME: ${MONGO_DB_NAME}
+      PORT: ${PORT}
+    restart: always
+
+volumes:
+  app-vol:
+    external: false
