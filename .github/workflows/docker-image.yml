@@ -41,7 +41,7 @@ jobs:
       
     - name: Push Docker Image
       run: |
-        docker push ndifabio/ecommerce-server:1.0.1 .
+        docker push ndifabio/ecommerce-server:1.0.1
         
 #     - name: Build the Docker image
 #       run: docker build . --file Dockerfile --tag my-image-name:$(date +%s)
