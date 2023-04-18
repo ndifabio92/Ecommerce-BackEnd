@@ -1,8 +1,7 @@
 import express from 'express';
 import cors from 'cors';
-import { products, shoppingCart } from '../routes/index.js';
-import { dbConnection } from "../database/config.js";
-
+import {products, shoppingCart} from '../routes/index.js';
+import {dbConnection} from "../database/config.js";
 
 class Server {
     constructor() {
@@ -20,7 +19,7 @@ class Server {
 
     middlewares() {
         this.app.use(express.json());
-        this.app.use(express.urlencoded({ extended: true }));
+        this.app.use(express.urlencoded({extended: true}));
         this.app.use(cors());
     }
 
