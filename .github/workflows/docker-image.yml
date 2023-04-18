@@ -37,7 +37,7 @@ jobs:
     
     - name: Build Docker Image
       run: |
-        docker build -t ndifabio/ecommerce-server:1.0.1 -p linux/amd64,linux/arm64 .
+        docker build -t ndifabio/ecommerce-server:1.0.1 .
       
     - name: Push Docker Image
       run: |
