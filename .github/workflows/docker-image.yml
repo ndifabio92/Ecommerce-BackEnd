@@ -1,19 +1,16 @@
 name: Docker Image CI
 
 on:
-  push:
-    branches: [ "master" ]
+  # push:
+  # branches: [ "master" ]
   pull_request:
-    branches: [ "master" ]
+    branches: ["master"]
 
 jobs:
-
   build:
-
     runs-on: ubuntu-latest
-    
-    steps:
 
+    steps:
       - name: Set up Docker Buildx Multiplatform
         run: |
           sudo docker buildx version
@@ -41,7 +38,6 @@ jobs:
           echo "Iniciando Login"
           docker login -u $DOCKER_USER -p $DOCKER_PASSWORD
           echo "Fin del Login"
-
 
       - name: Build Docker Image
         env:
