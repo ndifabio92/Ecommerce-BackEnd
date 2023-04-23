@@ -21,10 +21,10 @@ beforeEach(async () => {
     cart1.save();
 });
 
-afterAll(() => {
-    mongoose.connection.close();
+afterAll(async () => {
+    await mongoose.connection.close();
     server.close();
-})
+});
 
 
 describe('DB VALIDATORS', () => {

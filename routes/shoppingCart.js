@@ -9,6 +9,7 @@ const router = Router();
 router.get('/:cid', [
     check('cid', 'No es un id valido').isMongoId(),
     check('cid').custom(cartExist),
+    inputsValidation
 ], getCartById);
 
 router.post('/', [

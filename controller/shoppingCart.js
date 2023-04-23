@@ -16,7 +16,7 @@ export const postCart = async (req = request, res = response) => {
         const { body } = req;
         const cart = new Cart(body);
         await cart.save();
-        res.send({ msg: "Carrito de compra creado", cart });
+        res.status(201).send({ msg: "Carrito de compra creado", cart });
     } catch (error) {
         res.status(500).send({ error: error.message });
     }

@@ -18,10 +18,10 @@ beforeEach(async () => {
     product2.save();
 });
 
-afterAll(() => {
-    mongoose.connection.close();
+afterAll(async () => {
+    await mongoose.connection.close();
     server.close();
-})
+});
 
 
 describe('API GET PRODUCTS', () => {
@@ -44,11 +44,11 @@ describe('API GET PRODUCTS', () => {
     });
 
     describe('ERROR GET API', () => {
-        test('/api/products/:id ', async () => {
-            const { status, body } = await api.get('/api/products/:id', getProductById);
+        test('/api/products/643c0c7701d8fb15b03506fa', async () => {
+            const id = '643c0c7701d8fb15b03506fa';
+            const { status, body } = await api.get(`/api/products/${id}`, getProductById);
             expect(status).toBe(400);
-            expect(body).toHaveProperty('errors');
-            // expect(() => functionWithError()).toThrow(Error);
+            expect(body.errors[0].msg).toContain(`El producto con el id ${id} no existe`);
         });
     });
 
