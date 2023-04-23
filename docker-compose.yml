@@ -29,7 +29,7 @@ services:
       - ecommerceDB
       - mongo-express
     container_name: "ecommerce-server"
-    image: ndifabio/ecommerce-server:1.0.0
+    image: ndifabio/ecommerce-server:0.0.0
     ports:
       - 8000:8000
     environment:
