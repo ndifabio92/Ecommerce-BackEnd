@@ -8,7 +8,7 @@ class Server {
         this.app = express();
         this.port = process.env.PORT;
         this.server = null;
-
+        
         this.connectDB();
         this.middlewares();
         this.routes();
@@ -38,6 +38,7 @@ class Server {
     close() {
         this.server.close();
     }
+
 }
 
 export default Server;
