@@ -1,5 +1,5 @@
-import {ObjectId} from "mongodb";
-import {Schema, model} from "mongoose";
+import { ObjectId } from "mongodb";
+import { Schema, model, } from "mongoose";
 
 const CartSchema = new Schema({
     products: {

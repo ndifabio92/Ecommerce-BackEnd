@@ -1,13 +1,14 @@
 import express from 'express';
 import cors from 'cors';
-import {products, shoppingCart} from '../routes/index.js';
-import {dbConnection} from "../database/config.js";
+import { products, shoppingCart } from '../routes/index.js';
+import { dbConnection } from "../database/config.js";
 
 class Server {
     constructor() {
         this.app = express();
         this.port = process.env.PORT;
-
+        this.server = null;
+        
         this.connectDB();
         this.middlewares();
         this.routes();
@@ -19,7 +20,7 @@ class Server {
 
     middlewares() {
         this.app.use(express.json());
-        this.app.use(express.urlencoded({extended: true}));
+        this.app.use(express.urlencoded({ extended: true }));
         this.app.use(cors());
     }
 
@@ -28,11 +29,16 @@ class Server {
         this.app.use('/api/carts', shoppingCart);
     }
 
-    listen() {
-        this.app.listen(this.port, () => {
+    start() {
+        this.server = this.app.listen(this.port, () => {
             console.log(`Servidor corriendo en el puerto ${this.port}`);
         })
     }
+
+    close() {
+        this.server.close();
+    }
+
 }
 
 export default Server;
