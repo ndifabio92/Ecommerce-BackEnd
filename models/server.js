@@ -7,6 +7,7 @@ class Server {
     constructor() {
         this.app = express();
         this.port = process.env.PORT;
+        this.server = null;
 
         this.connectDB();
         this.middlewares();
@@ -28,10 +29,14 @@ class Server {
         this.app.use('/api/carts', shoppingCart);
     }
 
-    listen() {
-        this.app.listen(this.port || 9000, () => {
-            console.log(`Servidor corriendo en el puerto ${this.port || 9000}`);
+    start() {
+        this.server = this.app.listen(this.port, () => {
+            console.log(`Servidor corriendo en el puerto ${this.port}`);
         })
+    }
+
+    close() {
+        this.server.close();
     }
 }
 
