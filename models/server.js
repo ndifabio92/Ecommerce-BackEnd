@@ -1,21 +1,24 @@
 import express from 'express';
 import cors from 'cors';
 import { products, shoppingCart } from '../routes/index.js';
-import { dbConnection } from "../database/config.js";
-
+import dbConnection from '../database/config.js';
 class Server {
+
     constructor() {
         this.app = express();
         this.port = process.env.PORT;
         this.server = null;
-        
         this.connectDB();
         this.middlewares();
         this.routes();
+
+        if (Server.instance) return Server.instance;
+
+        Server.instance = this;
     }
 
     async connectDB() {
-        await dbConnection();
+        await dbConnection.connect();
     }
 
     middlewares() {
