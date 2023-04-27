@@ -2,12 +2,12 @@
   "name": "ecommerce-backend",
   "version": "1.0.0",
   "description": "",
-  "main": "ProductManager.js",
+  "main": "app.js",
   "type": "module",
   "scripts": {
-    "start": "node app",
+    "start": "cross-env NODE_ENV=dev node app",
     "dev": "nodemon app",
-    "test": "NODE_OPTIONS=--experimental-vm-modules npx jest"
+    "test": "cross-env NODE_ENV=test && NODE_OPTIONS=--experimental-vm-modules npx jest"
   },
   "repository": {
     "type": "git",
@@ -22,6 +22,7 @@
   "homepage": "https://github.com/ndifabio92/Ecommerce-BackEnd#readme",
   "dependencies": {
     "cors": "^2.8.5",
+    "cross-env": "^7.0.3",
     "dotenv": "^16.0.3",
     "eslint": "^8.39.0",
     "express": "^4.18.2",
