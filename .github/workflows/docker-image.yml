@@ -16,7 +16,7 @@ jobs:
       - name: Set up Docker Buildx Multiplatform
         run: |
           sudo docker buildx version
-          sudo docker buildx create --platform linux/amd64,linux/arm64 --use
+          sudo docker buildx create --platform linux/arm64,linux/amd64 --use
 
       - name: Git Semantic Version
         uses: PaulHatch/semantic-version@v5.0.3
