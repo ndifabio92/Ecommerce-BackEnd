@@ -53,12 +53,9 @@ jobs:
           DOCKER_HUB: ${{ secrets.DOCKER_HUB }}
         with:
           context: .
-          file: ./Dockerfile
           platforms: linux/amd64,linux/arm64
           push: true
-          tags: |
-            $DOCKER_HUB:latest
-            $DOCKER_HUB:$NEW_VERSION
+          tags: $DOCKER_HUB:$NEW_VERSION
       # - name: Build Docker Image
       #   env:
       #     NEW_VERSION: ${{ steps.version.outputs.version }}
