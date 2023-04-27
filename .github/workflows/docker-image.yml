@@ -16,7 +16,7 @@ jobs:
       - name: Set up Docker Buildx Multiplatform
         run: |
           sudo docker buildx version
-          sudo docker buildx create --platform linux/arm64,linux/amd64 --use
+          sudo docker buildx create --platform=$BUILDPLATFORM --use
 
       - name: Checkout code
         uses: actions/checkout@v3
