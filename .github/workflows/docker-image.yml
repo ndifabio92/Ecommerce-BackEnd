@@ -48,12 +48,17 @@ jobs:
 
       - name: Build and Push
         uses: docker/build-push-action@v4
+        env:
+          NEW_VERSION: ${{ steps.version.outputs.version }}
+          DOCKER_HUB: ${{ secrets.DOCKER_HUB }}
         with:
           context: .
           file: ./Dockerfile
           platforms: linux/amd64,linux/arm64
           push: true
-          tags: ndifabio/ecommerce-server:0.0.2
+          tags: |
+            $DOCKER_HUB:latest
+            $DOCKER_HUB:$NEW_VERSION
       # - name: Build Docker Image
       #   env:
       #     NEW_VERSION: ${{ steps.version.outputs.version }}
