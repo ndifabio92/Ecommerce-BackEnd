@@ -29,19 +29,7 @@ export const postProductByCartId = async (req = request, res = response) => {
     try {
         const { cid, pid } = req.params;
         const manager = new CartManager();
-        const cart = await manager.getOne(cid);
-        const product = cart.products.find(item => item._id === pid);
-        product ? product.quantity += 1 : cart.products = [...cart.products, { id: pid, quantity: 1 }];
-
-        const changedId = cart.products.map(item => {
-            const { id, ...rest } = item;
-            return {
-                ...rest,
-                _id: new ObjectId(item.id).toString()
-            }
-        });
-
-        const result = await manager.insert(cid, changedId);
+        const result = await manager.insert(cid, pid);
 
         res.send(result);
     } catch (error) {

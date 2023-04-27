@@ -2,7 +2,7 @@ import { expect, jest, test } from '@jest/globals';
 import mongoose from 'mongoose';
 import supertest from 'supertest';
 import server from '../../app';
-import Product from '../../models/productManager';
+import Product from '../../models/productSchema.js';
 import { deleteProduct, getProductById, getProducts, postProduct, putProduct } from '../../controller/product';
 import initialProducts from '../mock/mock-products.json';
 
@@ -14,8 +14,14 @@ beforeEach(async () => {
     const product = new Product(initialProducts[0]);
     product.save();
 
-    const product2 = new Product(initialProducts[1]);
-    product2.save();
+    const product1 = new Product(initialProducts[1]);
+    product1.save();
+
+    const product3 = new Product(initialProducts[2]);
+    product3.save();
+
+    const product4 = new Product(initialProducts[3]);
+    product4.save();
 });
 
 afterAll(async () => {
@@ -28,7 +34,7 @@ describe('API GET PRODUCTS', () => {
     test('/api/products/', async () => {
         const { status, body } = await api.get('/api/products', getProducts);
         expect(status).toBe(200);
-        expect(body.length).toBeGreaterThanOrEqual(initialProducts.length);
+        expect(body.length).toBeGreaterThanOrEqual(initialProducts.filter(item => item.status).length - 1);
     });
 
     test('/api/products/?limit=2', async () => {
@@ -38,9 +44,11 @@ describe('API GET PRODUCTS', () => {
     });
 
     test('/api/products/:id ', async () => {
+        const { _id, __v, ...rest } = initialProducts[1];
         const { status, body } = await api.get(`/api/products/${initialProducts[1]._id}`, getProductById);
+
         expect(status).toBe(200);
-        expect(body).toEqual(initialProducts[1]);
+        expect(body).toEqual({ ...rest, id: _id });
     });
 
     describe('ERROR GET API', () => {
@@ -103,7 +111,7 @@ describe('API POST PRODUCTS', () => {
 describe('API PUT PRODUCTS', () => {
     test('/api/products/:id', async () => {
         const updateProduct = {
-            "_id": initialProducts[1]._id,
+            "id": initialProducts[1]._id,
             "title": "producto prueba actualizado",
             "description": "Este es un producto prueba actualizado",
             "code": "test",
@@ -118,11 +126,12 @@ describe('API PUT PRODUCTS', () => {
             ],
         };
 
+        const responseBody = { msg: "Producto actualizado", result: updateProduct };
+
         const { status, body } = await api.put(`/api/products/${initialProducts[1]._id}`, postProduct).send(updateProduct);
 
-        const product = { msg: "Producto actualizado", result: { ...updateProduct, _id: initialProducts[1]._id, "__v": 0 } };
         expect(status).toBe(200);
-        expect(body).toStrictEqual(product);
+        expect(body).toStrictEqual(responseBody);
     });
 
     describe('ERRORS PUT API', () => {
@@ -159,7 +168,8 @@ describe('API PUT PRODUCTS', () => {
 
 describe('API DELETE PRODUCTS', () => {
     test('/api/products/:id', async () => {
-        const productDelete = { msg: "Producto eliminado", result: { ...initialProducts[1], status: false } };
+        const { _id, __v, ...rest } = initialProducts[1];
+        const productDelete = { msg: "Producto eliminado", result: { ...rest, status: false, id: _id } };
 
         const { status, body } = await api.delete(`/api/products/${initialProducts[1]._id}`, deleteProduct);
 

@@ -37,13 +37,23 @@ class CartDao {
         }
     };
 
-    async insert(id, cart) {
+    async insert(cid, pid) {
         try {
-            const document = await cartSchema.findByIdAndUpdate(id, {
-                $set: {
-                    products: cart
-                }
-            }, { new: true });
+            const updateProducts = await cartSchema.findOneAndUpdate(
+                { _id: cid, 'products._id': pid },
+                { $inc: { 'products.$.quantity': 1 } },
+                { new: true }
+            );
+
+            if (!updateProducts) {
+                await cartSchema.updateOne(
+                    { _id: cid },
+                    { $push: { products: { _id: pid, quantity: 1 } } }
+                );
+            };
+
+            const document = await cartSchema.findById(cid);
+
             return {
                 id: document._id,
                 products: document.products.map(item => {

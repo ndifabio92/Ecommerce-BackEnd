@@ -2,26 +2,30 @@ import { expect, jest, test } from '@jest/globals';
 import mongoose from 'mongoose';
 import supertest from 'supertest';
 import server from '../../app';
+import Product from '../../models/productSchema.js';
+import Cart from '../../models/cartSchema.js';
 import initialProducts from '../mock/mock-products.json';
 import initialCarts from '../mock/mock-carts.json';
-import Cart from '../../models/shoppingCartManager';
-import Product from '../../models/productManager';
-import { getCartById, postProductByCartId } from '../../controller/shoppingCart';
-import { postProduct } from '../../controller/product';
+import initialCartsResponse from '../mock/mock-carts-response.json';
+import { getCartById, postProductByCartId } from '../../controller/shoppingCart.js';
+import { postProduct } from '../../controller/product.js';
 
 const api = supertest(server.app);
 
 beforeEach(async () => {
     await Product.deleteMany({});
 
-    const product = new Product(initialProducts[0]);
+    const product = new Product(initialProducts[1]);
     product.save();
 
-    const product2 = new Product(initialProducts[1]);
+    const product2 = new Product(initialProducts[2]);
     product2.save();
 
     await Cart.deleteMany({});
-    const cart1 = new Cart(initialCarts[0]);
+    const cart = new Cart(initialCarts[0]);
+    cart.save();
+
+    const cart1 = new Cart(initialCarts[1]);
     cart1.save();
 });
 
@@ -34,7 +38,7 @@ describe('API GET CART BY ID', () => {
     test('/api/carts/:id', async () => {
         const { status, body } = await api.get(`/api/carts/${initialCarts[0]._id}`, getCartById);
         expect(status).toBe(200);
-        expect(body).toEqual(initialCarts[0]);
+        expect(body).toEqual(initialCartsResponse[0]);
     });
 
     describe('ERROR GET CART', () => {
@@ -52,11 +56,11 @@ describe('API POST CART', () => {
         const newCart = {
             "products": [
                 {
-                    "_id": initialProducts[0]._id,
+                    "_id": initialProducts[1]._id,
                     "quantity": 1
                 },
                 {
-                    "_id": initialProducts[1]._id,
+                    "_id": initialProducts[2]._id,
                     "quantity": 10
                 }
             ]
@@ -72,14 +76,14 @@ describe('API POST NEW PRODUCT BY CART ID', () => {
     test('/api/carts/cid/product/pid', async () => {
         const { status, body } = await api.post(`/api/carts/${initialCarts[0]._id}/product/${initialProducts[1]._id}`, postProductByCartId);
         expect(status).toBe(200);
-        expect(body.products).toEqual([...initialCarts[0].products, { _id: initialProducts[1]._id, quantity: 1 }]);
+        expect(body.products).toEqual([...initialCartsResponse[0].products, { id: initialProducts[1]._id, quantity: 1 }]);
     });
 });
 
 describe('API POST SOME PRODUCT BY CART ID', () => {
     test('/api/carts/cid/product/pid', async () => {
-        const { status, body } = await api.post(`/api/carts/${initialCarts[0]._id}/product/${initialProducts[0]._id}`, postProductByCartId);
+        const { status, body } = await api.post(`/api/carts/${initialCarts[1]._id}/product/${initialProducts[1]._id}`, postProductByCartId);
         expect(status).toBe(200);
-        expect(body.products[0]).toEqual({ _id: initialProducts[0]._id, quantity: initialCarts[0].products[0].quantity + 1 });
+        expect(body.products[0]).toEqual({ id: initialProducts[1]._id, quantity: initialCarts[0].products[0].quantity + 1 });
     });
 });
