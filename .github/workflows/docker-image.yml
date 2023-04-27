@@ -9,14 +9,14 @@ on:
       - "master"
 
 jobs:
-  builx:
+  build:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Set up Docker Buildx Multiplatform
-        run: |
-          sudo docker buildx version
-          sudo docker buildx create --platform linux/arm64,linux/amd64 --use
+      # - name: Set up Docker Buildx Multiplatform
+      #   run: |
+      #     sudo docker buildx version
+      #     sudo docker buildx create --platform linux/arm64,linux/amd64 --use
 
       - name: Checkout code
         uses: actions/checkout@v3
