@@ -13,11 +13,6 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      # - name: Set up Docker Buildx Multiplatform
-      #   run: |
-      #     sudo docker buildx version
-      #     sudo docker buildx create --platform=linux/arm64,linux/amd64 --use
-
       - name: Checkout code
         uses: actions/checkout@v3
         with:
@@ -43,14 +38,8 @@ jobs:
           username: ${{ secrets.DOCKER_USER }}
           password: ${{ secrets.DOCKER_PASSWORD }}
 
-        # run: |
-        #   docker login -u $DOCKER_USER -p $DOCKER_PASSWORD
-
       - name: Build and Push
         uses: docker/build-push-action@v4
-        # env:
-        #   NEW_VERSION: ${{ steps.version.outputs.version }}
-        #   DOCKER_HUB: ${{ secrets.DOCKER_HUB }}
         with:
           context: .
           platforms: linux/amd64,linux/arm64
@@ -58,21 +47,3 @@ jobs:
           tags: |
             ${{ secrets.DOCKER_HUB }}:latest
             ${{ secrets.DOCKER_HUB }}:${{ steps.version.outputs.version }}
-
-      # - name: Build Docker Image
-      #   env:
-      #     NEW_VERSION: ${{ steps.version.outputs.version }}
-      #     DOCKER_HUB: ${{ secrets.DOCKER_HUB }}
-
-      #   run: |
-      #     docker buildx build -t $DOCKER_HUB:$NEW_VERSION .
-      #     docker buildx build -t $DOCKER_HUB:latest .
-      #     echo "New version: $NEW_VERSION"
-
-      # - name: Push Docker Image
-      #   env:
-      #     NEW_VERSION: ${{ steps.version.outputs.version }}
-      #     DOCKER_HUB: ${{ secrets.DOCKER_HUB }}
-      #   run: |
-      #     docker push $DOCKER_HUB:$NEW_VERSION
-      #     docker push $DOCKER_HUB:latest
