@@ -194,5 +194,5 @@ export default {
   // watchman: true,
 
   detectOpenHandles: true,
-  silent: true
+  silent: false
 };

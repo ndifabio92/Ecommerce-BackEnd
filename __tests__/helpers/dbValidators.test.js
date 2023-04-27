@@ -3,8 +3,8 @@ import mongoose from 'mongoose';
 import supertest from 'supertest';
 import server from '../../app';
 import { cartExist, codeExist, productExist } from '../../helpers/dbValidators';
-import Product from '../../models/productManager';
-import Cart from '../../models/shoppingCartManager';
+import Product from '../../models/productSchema';
+import Cart from '../../models/cartSchema';
 import initialProducts from '../mock/mock-products.json';
 import initialCarts from '../mock/mock-carts.json'
 
@@ -30,7 +30,7 @@ afterAll(async () => {
 describe('DB VALIDATORS', () => {
     test('code exist', async () => {
         try {
-            await codeExist(initialProducts[1].code);
+            await codeExist(initialProducts[0].code);
         } catch (error) {
             expect(error.toString()).toEqual(`Error: El codigo ${initialProducts[0].code} ya existe`);
         }
@@ -40,7 +40,7 @@ describe('DB VALIDATORS', () => {
         try {
             await productExist(initialProducts[0]._id);
         } catch (error) {
-            expect(error.toString()).toEqual(`Error: El producto con el id ${initialProducts[1]._id} no existe`);
+            expect(error.toString()).toEqual(`Error: El producto con el id ${initialProducts[0]._id} no existe o se encuentra eliminado`);
         }
     });
 

@@ -1,4 +1,4 @@
-import { expect, jest, test } from '@jest/globals';
+import { expect, test } from '@jest/globals';
 import mongoose from 'mongoose';
 import dbConnection from '../../database/config';
 
@@ -7,12 +7,11 @@ afterAll(async () => {
 });
 
 describe('TEST DB CONNECTION', () => {
-    test('/api/products/', async () => {
+    test('dbConnection Success', async () => {
         try {
             await dbConnection().connect();
         } catch (error) {
             expect(() => functionWithError()).toThrow(Error);
         }
     });
-
 });

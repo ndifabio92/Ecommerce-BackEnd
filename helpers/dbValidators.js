@@ -1,28 +1,31 @@
-import Product from "../models/productManager.js";
-import Cart from "../models/shoppingCartManager.js";
+import ProductManager from "../managers/ProductManager.js";
+import CartManager from "../managers/CartManager.js";
 
 export const codeExist = async (code = "") => {
     try {
-        const isExist = await Product.findOne({ code });
+        const manager = new ProductManager();
+        const isExist = await manager.getOneCode(code);
         if (isExist) throw new Error(`El codigo ${code} ya existe`);
     } catch (error) {
         throw error;
     }
 };
 
-export const productExist = async (_id = "") => {
+export const productExist = async (id = "") => {
     try {
-        const isExist = await Product.findById({ _id });
-        if (!isExist) throw new Error(`El producto con el id ${_id} no existe`);
+        const manager = new ProductManager();
+        const isExist = await manager.getOne(id);
+        if (!isExist) throw new Error(`El producto con el id ${id} no existe o se encuentra eliminado`);
     } catch (error) {
         throw error;
     }
 };
 
-export const cartExist = async (_id = "") => {
+export const cartExist = async (id = "") => {
     try {
-        const isExist = await Cart.findById({ _id });
-        if (!isExist) throw new Error(`El carrito de compra con el id ${_id} no existe`);
+        const manager = new CartManager();
+        const isExist = await manager.getOne(id);
+        if (!isExist) throw new Error(`El carrito de compra con el id ${id} no existe`);
     } catch (error) {
         throw error;
     }
