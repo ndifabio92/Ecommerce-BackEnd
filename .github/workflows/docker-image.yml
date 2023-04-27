@@ -11,11 +11,6 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
-        with:
-          fetch-depth: 0
-        
       - name: Set up Docker Buildx Multiplatform
         run: |
           sudo docker buildx version
@@ -29,6 +24,11 @@ jobs:
           format: "${major}.${minor}.${patch}-prerelease${increment}"
         id: version
       
+      - name: Checkout code
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+          
       - name: Docker login
         env:
           DOCKER_USER: ${{ secrets.DOCKER_USER }}
@@ -43,8 +43,8 @@ jobs:
           DOCKER_HUB: ${{ secrets.DOCKER_HUB }}
           
         run: |
-          docker buildx build -t $DOCKER_HUB:$NEW_VERSION .
-          docker buildx build -t $DOCKER_HUB:latest .
+          docker build -t $DOCKER_HUB:$NEW_VERSION .
+          docker build -t $DOCKER_HUB:latest .
           echo "New version: $NEW_VERSION!!!"
 
       - name: Push Docker Image
