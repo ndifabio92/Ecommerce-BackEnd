@@ -18,6 +18,11 @@ jobs:
           sudo docker buildx version
           sudo docker buildx create --platform linux/arm64,linux/amd64 --use
 
+      - name: Checkout code
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
       - name: Git Semantic Version
         uses: PaulHatch/semantic-version@v5.0.3
         with:
@@ -25,11 +30,6 @@ jobs:
           minor_pattern: "feat:"
           format: "${major}.${minor}.${patch}-prerelease${increment}"
         id: version
-
-      - name: Checkout code
-        uses: actions/checkout@v3
-        with:
-          fetch-depth: 0
 
       - name: Docker login
         env:
