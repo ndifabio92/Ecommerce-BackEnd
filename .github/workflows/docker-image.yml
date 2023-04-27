@@ -48,14 +48,17 @@ jobs:
 
       - name: Build and Push
         uses: docker/build-push-action@v4
-        env:
-          NEW_VERSION: ${{ steps.version.outputs.version }}
-          DOCKER_HUB: ${{ secrets.DOCKER_HUB }}
+        # env:
+        #   NEW_VERSION: ${{ steps.version.outputs.version }}
+        #   DOCKER_HUB: ${{ secrets.DOCKER_HUB }}
         with:
           context: .
           platforms: linux/amd64,linux/arm64
           push: true
-          tags: $DOCKER_HUB:$NEW_VERSION
+          tags: |
+            ${{ secrets.DOCKER_HUB }}:latest
+            ${{ secrets.DOCKER_HUB }}:${{ steps.version.outputs.version }}
+
       # - name: Build Docker Image
       #   env:
       #     NEW_VERSION: ${{ steps.version.outputs.version }}
