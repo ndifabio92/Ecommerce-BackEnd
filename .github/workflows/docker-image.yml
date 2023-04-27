@@ -53,8 +53,8 @@ jobs:
           DOCKER_HUB: ${{ secrets.DOCKER_HUB }}
 
         run: |
-          docker buildx -t ndifabio/ecommerce-server:$NEW_VERSION .
-          docker buildx -t ndifabio/ecommerce-server:latest .
+          docker build -t ndifabio/ecommerce-server:$NEW_VERSION .
+          docker build -t ndifabio/ecommerce-server:latest .
           echo "New version: $NEW_VERSION"
 
       - name: Push Docker Image
