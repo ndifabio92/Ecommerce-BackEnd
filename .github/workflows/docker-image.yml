@@ -53,7 +53,7 @@ jobs:
           file: ./Dockerfile
           platforms: linux/amd64,linux/arm64
           push: true
-          tags: ${{ secrets.DOCKER_HUB }}:${{ steps.version.outputs.version }}
+          tags: ndifabio/ecommerce-server:0.0.2
       # - name: Build Docker Image
       #   env:
       #     NEW_VERSION: ${{ steps.version.outputs.version }}
