@@ -4,7 +4,7 @@ on:
   push:
     branches: [ "master" ]
   pull_request:
-    branches: ["master"]
+    branches: [ "master" ]
 
 jobs:
   build:
@@ -16,6 +16,11 @@ jobs:
         with:
           fetch-depth: 0
         
+      - name: Set up Docker Buildx Multiplatform
+        run: |
+          sudo docker buildx version
+          sudo docker buildx create --platform linux/amd64,linux/arm64 --use
+          
       - name: Git Semantic Version
         uses: PaulHatch/semantic-version@v5.0.3
         with:
@@ -23,11 +28,6 @@ jobs:
           minor_pattern: "feat:"
           format: "${major}.${minor}.${patch}-prerelease${increment}"
         id: version
-        
-      - name: Set up Docker Buildx Multiplatform
-        run: |
-          sudo docker buildx version
-          sudo docker buildx create --platform linux/amd64,linux/arm64 --use
       
       - name: Docker login
         env:
@@ -45,6 +45,7 @@ jobs:
         run: |
           docker buildx build -t $DOCKER_HUB:$NEW_VERSION .
           docker buildx build -t $DOCKER_HUB:latest .
+          echo "New version: $NEW_VERSION!!!"
 
       - name: Push Docker Image
         env:
@@ -53,11 +54,3 @@ jobs:
         run: |
           docker push $DOCKER_HUB:$NEW_VERSION
           docker push $DOCKER_HUB:latest
-          
-          
-          
-          
-
-#     - name: Build the Docker image
-#       run: docker build . --file Dockerfile --tag my-image-name:$(date +%s)
-
