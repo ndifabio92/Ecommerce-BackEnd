@@ -2,9 +2,11 @@ name: Docker Image CI
 
 on:
   push:
-    branches: [ "master" ]
+    branches:
+      - master
   pull_request:
-    branches: [ "master" ]
+    branches:
+      - master
 
 jobs:
   build:
@@ -15,7 +17,7 @@ jobs:
         run: |
           sudo docker buildx version
           sudo docker buildx create --platform linux/amd64,linux/arm64 --use
-          
+
       - name: Git Semantic Version
         uses: PaulHatch/semantic-version@v5.0.3
         with:
@@ -23,12 +25,12 @@ jobs:
           minor_pattern: "feat:"
           format: "${major}.${minor}.${patch}-prerelease${increment}"
         id: version
-      
+
       - name: Checkout code
         uses: actions/checkout@v3
         with:
           fetch-depth: 0
-          
+
       - name: Docker login
         env:
           DOCKER_USER: ${{ secrets.DOCKER_USER }}
@@ -41,10 +43,10 @@ jobs:
         env:
           NEW_VERSION: ${{ steps.version.outputs.version }}
           DOCKER_HUB: ${{ secrets.DOCKER_HUB }}
-          
+
         run: |
-          docker build -t $DOCKER_HUB:$NEW_VERSION .
-          docker build -t $DOCKER_HUB:latest .
+          docker buildx -t $DOCKER_HUB:$NEW_VERSION .
+          docker buildx -t $DOCKER_HUB:latest .
           echo "New version: $NEW_VERSION!!!"
 
       - name: Push Docker Image
