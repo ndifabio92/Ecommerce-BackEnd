@@ -1,7 +1,7 @@
 {
   "name": "ecommerce-backend",
   "version": "1.0.0",
-  "description": "ecommerce",
+  "description": "ecommerce-backend",
   "main": "app.js",
   "type": "module",
   "scripts": {
