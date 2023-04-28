@@ -11,7 +11,7 @@ services:
   #      MONGO_INITDB_ROOT_USERNAME: admin
   #      MONGO_INITDB_ROOT_PASSWORD: pass
   #    command: [ "--auth" ]
-  
+
   mongo-express:
     depends_on:
       - ecommerceDB
@@ -29,7 +29,7 @@ services:
       - ecommerceDB
       - mongo-express
     container_name: "ecommerce-server"
-    image: ndifabio/ecommerce-server:0.0.1
+    image: ndifabio/ecommerce-server:1.0.1
     ports:
       - 8000:8000
     environment:
