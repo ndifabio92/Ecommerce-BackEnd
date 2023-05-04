@@ -5,10 +5,10 @@ import { productExist } from "../helpers/dbValidators.js";
 
 export const getProducts = async (req = request, res = response) => {
     try {
-        const { limit } = req.query;
+        const paginate = req.query;
         const manager = new ProductManager();
-        const result = await manager.getAll(limit);
-        res.send(result);
+        const result = await manager.getAll(paginate);
+        res.send({ status: "sucess", ...result });
     } catch (error) {
         res.status(500).send({ error: error.message });
     }

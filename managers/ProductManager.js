@@ -6,9 +6,9 @@ class ProductManager {
         this.dao = new ProductDao();
     };
 
-    async getAll(limit) {
+    async getAll(paginate) {
         try {
-            return this.dao.getAll(limit);
+            return this.dao.getAll(paginate);
         } catch (error) {
             throw error;
         }
