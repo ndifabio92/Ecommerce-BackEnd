@@ -1,7 +1,5 @@
 import { request, response } from "express";
-import Cart from "../models/cartSchema.js";
 import CartManager from "../managers/CartManager.js";
-import { ObjectId } from "mongodb";
 
 export const getCartById = async (req = request, res = response) => {
     try {
@@ -30,9 +28,54 @@ export const postProductByCartId = async (req = request, res = response) => {
         const { cid, pid } = req.params;
         const manager = new CartManager();
         const result = await manager.insert(cid, pid);
-
         res.send(result);
     } catch (error) {
         res.status(500).send({ error: error.message });
     }
 };
+
+export const deleteCart = async (req = request, res = response) => {
+    try {
+        const { cid } = req.params;
+        const manager = new CartManager();
+        const result = await manager.delete(cid);
+        res.send(result);
+    } catch (error) {
+        res.status(500).send({ error: error.message });
+    }
+}
+
+export const deleteItem = async (req = request, res = response) => {
+    try {
+        const { cid, pid } = req.params;
+        const manager = new CartManager();
+        const result = await manager.deleteItem(cid, pid);
+        res.send(result);
+    } catch (error) {
+        res.status(500).send({ error: error.message });
+    }
+}
+
+export const putProductByCartId = async (req = request, res = response) => {
+    try {
+        const { body } = req;
+        const { cid, pid } = req.params;
+        const manager = new CartManager();
+        const result = await manager.updateItem(body, cid, pid);
+        res.send(result);
+    } catch (error) {
+        res.status(500).send({ error: error.message });
+    }
+}
+
+export const putProductsByCartId = async (req = request, res = response) => {
+    try {
+        const { body } = req;
+        const { cid } = req.params;
+        const manager = new CartManager();
+        const result = await manager.updateProducts(body, cid);
+        res.send(result);
+    } catch (error) {
+        res.status(500).send({ error: error.message });
+    }
+}
