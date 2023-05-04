@@ -1,10 +1,26 @@
-import productSchema from "../models/productSchema.js";
+import Product from "../models/productSchema.js";
 
+const SORTVALUE = {
+    'asc': 1,
+    'desc': -1
+};
 class ProductDao {
-    async getAll(limit) {
+    async getAll(paginate) {
         try {
-            const document = await productSchema.find({ status: true }).limit(limit);
-            return document.map(item => ({
+            const { limit = 10, page = 1, sort, query } = paginate;
+            const options = {
+                limit,
+                page,
+                sort: sort && { price: SORTVALUE[sort] },
+            };
+
+            const filters = {
+                status: true,
+                filter: query && { filter: { query } }
+            };
+
+            const { docs, ...rest } = await Product.paginate(filters, options)
+            const dto = docs.map(item => ({
                 id: item._id,
                 title: item.title,
                 description: item.description,
@@ -13,8 +29,10 @@ class ProductDao {
                 status: item.status,
                 stock: item.stock,
                 category: item.category,
-                thumbnail: item?.thumbnail
-            }))
+                thumbnail: item.thumbnail
+            }));
+
+            return { payload: dto, ...rest };
         } catch (error) {
             console.error(error);
             throw error;
@@ -23,7 +41,7 @@ class ProductDao {
 
     async getOne(id) {
         try {
-            const document = await productSchema.findById(id).where({ status: true });
+            const document = await Product.findById(id).where({ status: true });
             if (!document) return null;
 
             return {
@@ -35,7 +53,7 @@ class ProductDao {
                 status: document.status,
                 stock: document.stock,
                 category: document.category,
-                thumbnail: document?.thumbnail
+                thumbnail: document.thumbnail
             }
         } catch (error) {
             console.error(error);
@@ -45,28 +63,8 @@ class ProductDao {
 
     async getOneCode(code) {
         try {
-            const document = await productSchema.find({ code }, { status: true });
+            const document = await Product.findOne({ code }, { status: true });
             if (document.length === 0) return null;
-            return {
-                id: document[0]._id,
-                title: document[0].title,
-                description: document[0].description,
-                code: document[0].code,
-                price: document[0].price,
-                status: document[0].status,
-                stock: document[0].stock,
-                category: document[0].category,
-                thumbnail: document[0]?.thumbnail
-            }
-        } catch (error) {
-            console.error(error);
-            throw error;
-        }
-    }
-
-    async create(data) {
-        try {
-            const document = await productSchema.create(data);
             return {
                 id: document._id,
                 title: document.title,
@@ -76,7 +74,27 @@ class ProductDao {
                 status: document.status,
                 stock: document.stock,
                 category: document.category,
-                thumbnail: document?.thumbnail
+                thumbnail: document.thumbnail
+            }
+        } catch (error) {
+            console.error(error);
+            throw error;
+        }
+    }
+
+    async create(data) {
+        try {
+            const document = await Product.create(data);
+            return {
+                id: document._id,
+                title: document.title,
+                description: document.description,
+                code: document.code,
+                price: document.price,
+                status: document.status,
+                stock: document.stock,
+                category: document.category,
+                thumbnail: document.thumbnail
             }
         } catch (error) {
             console.error(error);
@@ -86,7 +104,7 @@ class ProductDao {
 
     async update(id, body) {
         try {
-            const document = await productSchema.findByIdAndUpdate(id, body, { new: true });
+            const document = await Product.findByIdAndUpdate(id, body, { new: true });
             return {
                 id: document._id,
                 title: document.title,
@@ -106,7 +124,7 @@ class ProductDao {
 
     async delete(id) {
         try {
-            const document = await productSchema.findByIdAndUpdate(id, { status: false }, { new: true });
+            const document = await Product.findByIdAndUpdate(id, { status: false }, { new: true });
             return {
                 id: document._id,
                 title: document.title,
@@ -116,7 +134,7 @@ class ProductDao {
                 status: document.status,
                 stock: document.stock,
                 category: document.category,
-                thumbnail: document?.thumbnail
+                thumbnail: document.thumbnail
             }
         } catch (error) {
             console.error(error);

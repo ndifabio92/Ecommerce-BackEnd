@@ -6,14 +6,15 @@ const CartSchema = new Schema({
         type: [{
             _id: {
                 type: ObjectId,
-                required: [true, "El id del producto es obligatorio"]
+                required: [true, "El id del producto es obligatorio"],
+                ref: 'Product',
             },
             quantity: {
                 type: Number,
-                required: [true, "La cantidad es requerida"]
-            }
+                required: [true, "La cantidad es requerida"],
+            },
         }],
-        required: [true, "Al menos tiene que haber un producto"],
+        required: [true, "Al menos tiene que haber un producto"]
     }
 });
 
