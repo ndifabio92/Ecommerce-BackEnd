@@ -21,7 +21,7 @@ class CartDao {
                         status: product.status,
                         stock: product.stock,
                         category: product.category,
-                        thumbnail: product?.thumbnail,
+                        thumbnail: product.thumbnail,
                     }
                 }),
 

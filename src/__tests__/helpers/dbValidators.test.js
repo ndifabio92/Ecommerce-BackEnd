@@ -1,10 +1,10 @@
 import { expect, jest, test } from '@jest/globals';
 import mongoose from 'mongoose';
 import supertest from 'supertest';
-import server from '../../app';
-import { cartExist, codeExist, productExist } from '../../helpers/dbValidators';
-import Product from '../../models/productSchema';
-import Cart from '../../models/cartSchema';
+import server from '../../app.js';
+import { cartExist, codeExist, productExist } from '../../helpers/dbValidators.js';
+import Product from '../../models/productSchema.js';
+import Cart from '../../models/cartSchema.js';
 import initialProducts from '../mock/mock-products.json';
 import initialCarts from '../mock/mock-carts.json'
 

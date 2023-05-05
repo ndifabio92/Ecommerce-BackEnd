@@ -1,9 +1,9 @@
 import { expect, jest, test } from '@jest/globals';
 import mongoose from 'mongoose';
 import supertest from 'supertest';
-import server from '../../app';
+import server from '../../app.js';
 import Product from '../../models/productSchema.js';
-import { deleteProduct, getProductById, getProducts, postProduct, putProduct } from '../../controller/product';
+import { deleteProduct, getProductById, getProducts, postProduct, putProduct } from '../../controller/product.js';
 import initialProducts from '../mock/mock-products.json';
 
 const api = supertest(server.app);
