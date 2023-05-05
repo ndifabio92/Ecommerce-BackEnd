@@ -1,0 +1,12 @@
+../../../node_modules/
+.vscode/
+.idea/
+src/Dockerfile
+../docker-compose.yml
+.DS_Store
+../.env
+../.env.example
+.git
+src/.gitignore
+.dockerignore
+README.md
