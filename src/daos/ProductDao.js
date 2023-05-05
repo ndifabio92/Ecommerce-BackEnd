@@ -114,7 +114,7 @@ class ProductDao {
                 status: document.status,
                 stock: document.stock,
                 category: document.category,
-                thumbnail: document?.thumbnail
+                thumbnail: document.thumbnail
             }
         } catch (error) {
             console.error(error);
