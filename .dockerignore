@@ -1,12 +1,12 @@
-../node_modules/
+../../../node_modules/
 .vscode/
 .idea/
-Dockerfile
+src/Dockerfile
 ../docker-compose.yml
 .DS_Store
-.env
-.env.example
+../.env
+../.env.example
 .git
-.gitignore
+src/.gitignore
 .dockerignore
 README.md
