@@ -73,7 +73,7 @@ export const putProductsByCartId = async (req = request, res = response) => {
         const { body } = req;
         const { cid } = req.params;
         const manager = new CartManager();
-        const result = await manager.updateProducts(body, cid);
+        const result = await manager.updateProducts(cid, body);
         res.send(result);
     } catch (error) {
         res.status(500).send({ error: error.message });

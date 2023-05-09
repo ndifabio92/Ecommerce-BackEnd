@@ -17,7 +17,6 @@ export const getProducts = async (req = request, res = response) => {
 export const getProductById = async (req = request, res = response) => {
     try {
         const { pid } = req.params;
-        await productExist(pid);
         const manager = new ProductManager();
         const result = await manager.getOne(pid);
         res.send(result);
@@ -42,12 +41,6 @@ export const putProduct = async (req = request, res = response) => {
         const { pid } = req.params;
         const { id, ...rest } = req.body;
         const manager = new ProductManager();
-        const codeExist = await manager.getOneCode(rest.code);
-        if (codeExist) {
-            if (codeExist?.id.toString() !== pid) throw new Error("El codigo ingresado ya esta siendo utilizado por otro producto");
-        };
-        await productExist(pid);
-
         const result = await manager.update(pid, rest);
 
         res.send({ msg: "Producto actualizado", result });

@@ -64,7 +64,7 @@ class ProductDao {
     async getOneCode(code) {
         try {
             const document = await Product.findOne({ code }, { status: true });
-            if (document.length === 0) return null;
+            if (!document) return null;
             return {
                 id: document._id,
                 title: document.title,

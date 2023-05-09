@@ -4,7 +4,7 @@ import { Schema, model, } from "mongoose";
 const CartSchema = new Schema({
     products: {
         type: [{
-            _id: {
+            id: {
                 type: ObjectId,
                 required: [true, "El id del producto es obligatorio"],
                 ref: 'Product',

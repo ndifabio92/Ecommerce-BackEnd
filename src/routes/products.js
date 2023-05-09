@@ -10,14 +10,14 @@ router.get('/', getProducts);
 
 router.get('/:pid', [
     check('pid', 'No es un id valido').isMongoId(),
-    check('pid').custom(productExist).escape(),
+    check('pid').escape(),
     inputsValidation
 ], getProductById);
 
 router.post('/', [
     check('title', 'El titulo es obligatorio').trim().notEmpty().escape(),
     check('description', 'La descripcion es obligatorio').trim().notEmpty().escape(),
-    check('code', 'El codigo es obligatorio').trim().notEmpty().custom(codeExist).escape(),
+    check('code', 'El codigo es obligatorio').trim().notEmpty().escape(),
     check('stock', 'El stock es obligatorio').trim().escape(),
     check('category', 'La categoria es obligatorio').trim().notEmpty().escape(),
     inputsValidation
@@ -25,7 +25,7 @@ router.post('/', [
 
 router.put('/:pid', [
     check('pid', 'No es un id valido').isMongoId(),
-    check('pid').custom(productExist).escape(),
+    check('pid').escape(),
     check('title', 'El titulo es obligatorio').trim().notEmpty().escape(),
     check('description', 'La descripcion es obligatorio').trim().notEmpty().escape(),
     check('code', 'El codigo es obligatorio').notEmpty().escape(),
@@ -36,7 +36,7 @@ router.put('/:pid', [
 
 router.delete('/:pid', [
     check('pid', 'No es un id valido').isMongoId(),
-    check('pid').custom(productExist).escape(),
+    check('pid').escape(),
     inputsValidation
 ], deleteProduct);
 

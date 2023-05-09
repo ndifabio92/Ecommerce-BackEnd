@@ -1,19 +1,18 @@
 import { Router } from "express";
 import { check } from "express-validator";
 import inputsValidation from "../middlewares/inputsValidate.js";
-import { productExist, cartExist } from "../helpers/dbValidators.js";
 import { getCartById, postCart, postProductByCartId, deleteCart, deleteItem, putProductByCartId, putProductsByCartId } from "../controller/shoppingCart.js";
 
 const router = Router();
 
 router.get('/:cid', [
     check('cid', 'No es un id valido').isMongoId(),
-    check('cid').custom(cartExist),
+    check('cid').escape(),
     inputsValidation
 ], getCartById);
 
 router.post('/', [
-    check('products.*._id', "No es un id valido").isMongoId().custom(productExist),
+    check('products.*.id', "No es un id valido").isMongoId(),
     check("products.*.quantity", "La cantidad es requerida").notEmpty(),
     check("products.*.quantity", "La cantidad tiene que ser mayor a 0").isInt({ min: 1 }),
     inputsValidation
@@ -21,8 +20,8 @@ router.post('/', [
 
 router.post('/:cid/product/:pid', [
     check('cid', 'No es un id valido').isMongoId(),
-    check('cid').custom(cartExist),
-    check('products.*._id', "No es un id valido").isMongoId().custom(productExist),
+    check('cid').escape(),
+    check('products.*.id', "No es un id valido").isMongoId(),
     check("products.*.quantity", "La cantidad es requerida").notEmpty(),
     check("products.*.quantity", "La cantidad tiene que ser mayor a 0").isInt({ min: 1 }),
     inputsValidation
@@ -30,21 +29,21 @@ router.post('/:cid/product/:pid', [
 
 router.delete('/:cid', [
     check('cid', 'No es un id valido').isMongoId(),
-    check('cid').custom(cartExist),
+    check('cid').escape(),
     inputsValidation
 ], deleteCart);
 
 router.delete('/:cid/product/:pid', [
     check('cid', 'No es un id valido').isMongoId(),
-    check('cid').custom(cartExist),
-    check('products.*._id', "No es un id valido").isMongoId().custom(productExist),
+    check('cid').escape(),
+    check('products.*._id', "No es un id valido").isMongoId(),
     inputsValidation,
 ], deleteItem);
 
 router.put('/:cid', [
     check('cid', 'No es un id valido').isMongoId(),
-    check('cid').custom(cartExist),
-    check('products.*._id', "No es un id valido").isMongoId().custom(productExist),
+    check('cid').escape(),
+    check('products.*.id', "No es un id valido").isMongoId(),
     check("products.*.quantity", "La cantidad es requerida").notEmpty(),
     check("products.*.quantity", "La cantidad tiene que ser mayor a 0").isInt({ min: 1 }),
     inputsValidation
@@ -52,8 +51,8 @@ router.put('/:cid', [
 
 router.put('/:cid/product/:pid', [
     check('cid', 'No es un id valido').isMongoId(),
-    check('cid').custom(cartExist),
-    check('products.*._id', "No es un id valido").isMongoId().custom(productExist),
+    check('cid').escape(),
+    check('products.*.id', "No es un id valido").isMongoId(),
     check("products.*.quantity", "La cantidad es requerida").notEmpty(),
     check("products.*.quantity", "La cantidad tiene que ser mayor a 0").isInt({ min: 1 }),
     inputsValidation

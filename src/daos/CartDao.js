@@ -48,20 +48,9 @@ class CartDao {
         }
     };
 
-    async insert(cid, pid) {
+    async insert(cid, body) {
         try {
-            let document = await Cart.findOneAndUpdate(
-                { _id: cid, 'products._id': pid },
-                { $inc: { 'products.$.quantity': 1 } },
-                { new: true }
-            );
-
-            if (!document) {
-                document = await Cart.findOneAndUpdate(
-                    { _id: cid },
-                    { $push: { products: { _id: pid, quantity: 1 } } }
-                );
-            };
+            const document = await Cart.findOneAndUpdate({ _id: cid }, body, { new: true });
 
             return {
                 id: document._id,
@@ -77,13 +66,9 @@ class CartDao {
         }
     };
 
-    async delete(id) {
+    async delete(id, cart) {
         try {
-            const document = await Cart.findOneAndUpdate(
-                { _id: id },
-                { $unset: { products: true } },
-                { new: true }
-            );
+            const document = await Cart.findByIdAndUpdate({ _id: id }, cart, { new: true });
             return {
                 id: document._id
             }
@@ -92,29 +77,26 @@ class CartDao {
         }
     };
 
-    async deleteItem(cid, pid) {
+    async deleteItem(cid, newProducts) {
         try {
-            const document = await Cart.findByIdAndUpdate(
-                { _id: cid },
-                { $pull: { products: { _id: pid } } },
-                { new: true }
-            )
-
+            const document = await Cart.findByIdAndUpdate({ _id: cid }, newProducts, { new: true });
             return {
-                id: document._id
+                id: document._id,
+                products: document.products.map(item => {
+                    return {
+                        id: item._id,
+                        quantity: item.quantity
+                    }
+                })
             };
         } catch (error) {
             throw error;
         }
     };
 
-    async updateItem(item, cid, pid) {
+    async updateItem(cid, cart) {
         try {
-            const document = await Cart.findOneAndUpdate(
-                { _id: cid, 'products._id': pid },
-                { $set: { 'products.$.quantity': item.quantity } },
-                { new: true }
-            );
+            const document = await Cart.findByIdAndUpdate({ _id: cid }, cart, { new: true })
             return {
                 id: document._id,
                 products: document.products.map(item => {
@@ -129,13 +111,9 @@ class CartDao {
         }
     };
 
-    async updateProducts(item, cid) {
+    async updateProducts(cid, body) {
         try {
-            const document = await Cart.findOneAndUpdate(
-                { _id: cid },
-                { $set: { 'products': item.products } },
-                { new: true }
-            );
+            const document = await Cart.findByIdAndUpdate({ _id: cid }, body, { new: true });
             return {
                 id: document._id,
                 products: document.products.map(item => {

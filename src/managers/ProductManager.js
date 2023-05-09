@@ -1,4 +1,5 @@
 import ProductDao from "../daos/ProductDao.js";
+import { productExist } from "../helpers/dbValidators.js";
 
 class ProductManager {
 
@@ -16,7 +17,10 @@ class ProductManager {
 
     async getOne(id) {
         try {
-            return this.dao.getOne(id);
+            const product = await this.dao.getOne(id);
+            if (!product) throw new Error(`El producto con el id ${id} no existe o se encuentra eliminado`);
+
+            return product;
         } catch (error) {
             throw error;
         }
@@ -30,9 +34,13 @@ class ProductManager {
         }
     };
 
-    async create(data) {
+    async create(body) {
         try {
-            return this.dao.create(data);
+            const codeExist = await this.dao.getOneCode(body.code);
+            if (codeExist) {
+                if (codeExist?.id.toString() !== body.id) throw new Error("El codigo ingresado ya esta siendo utilizado por otro producto");
+            };
+            return this.dao.create(body);
         } catch (error) {
             throw error;
         }
@@ -40,6 +48,14 @@ class ProductManager {
 
     async update(id, body) {
         try {
+            const productExist = await this.dao.getOne(id);
+            if (!productExist) throw new Error(`El producto con el id ${id} no existe o se encuentra eliminado`);
+
+            const codeExist = await this.dao.getOneCode(body.code);
+            if (codeExist) {
+                if (codeExist?.id.toString() !== id) throw new Error("El codigo ingresado ya esta siendo utilizado por otro producto");
+            };
+
             return this.dao.update(id, body, { new: true });
         } catch (error) {
             throw error;
@@ -48,6 +64,9 @@ class ProductManager {
 
     async delete(id) {
         try {
+            const productExist = await this.dao.getOne(id);
+            if (!productExist) throw new Error(`El producto con el id ${id} no existe o se encuentra eliminado`);
+
             return this.dao.delete(id, { status: false }, { new: true });
         } catch (error) {
             throw error;
