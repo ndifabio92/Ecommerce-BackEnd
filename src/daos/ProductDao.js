@@ -1,25 +1,10 @@
 import Product from "../models/productSchema.js";
 
-const SORTVALUE = {
-    'asc': 1,
-    'desc': -1
-};
+
 class ProductDao {
-    async getAll(paginate) {
+    async getAll(filters, options) {
         try {
-            const { limit = 10, page = 1, sort, query } = paginate;
-            const options = {
-                limit,
-                page,
-                sort: sort && { price: SORTVALUE[sort] },
-            };
-
-            const filters = {
-                status: true,
-                filter: query && { filter: { query } }
-            };
-
-            const { docs, ...rest } = await Product.paginate(filters, options)
+            const { docs, ...rest } = await Product.paginate(filters, options);
             const dto = docs.map(item => ({
                 id: item._id,
                 title: item.title,

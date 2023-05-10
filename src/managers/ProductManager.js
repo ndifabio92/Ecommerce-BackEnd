@@ -1,5 +1,4 @@
 import ProductDao from "../daos/ProductDao.js";
-import { productExist } from "../helpers/dbValidators.js";
 
 class ProductManager {
 
@@ -9,7 +8,21 @@ class ProductManager {
 
     async getAll(paginate) {
         try {
-            return this.dao.getAll(paginate);
+            const { limit = 10, page = 1, sort, query } = paginate;
+            const options = {
+                limit,
+                page,
+                sort: sort && { price: sort.toUpperCase() ? 1 : -1 },
+            };
+
+            const params = query?.split(':');
+
+            const filters = {
+                status: true,
+                [params?.type]: params?.value
+            };
+
+            return this.dao.getAll(filters, options);
         } catch (error) {
             throw error;
         }
