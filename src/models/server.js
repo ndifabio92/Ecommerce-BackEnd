@@ -1,7 +1,9 @@
 import express from 'express';
+
 import cors from 'cors';
-import { products, shoppingCart } from '../routes/index.js';
+import { products, shoppingCart, users, session } from '../routes/index.js';
 import dbConnection from '../database/config.js';
+import sessionMiddleware from '../middlewares/session.js';
 class Server {
 
     constructor() {
@@ -25,11 +27,14 @@ class Server {
         this.app.use(express.json());
         this.app.use(express.urlencoded({ extended: true }));
         this.app.use(cors());
+        this.app.use(sessionMiddleware);
     }
 
     routes() {
         this.app.use('/api/products', products);
         this.app.use('/api/carts', shoppingCart);
+        this.app.use('/api/signup', users);
+        this.app.use('/api/session', session);
     }
 
     start() {

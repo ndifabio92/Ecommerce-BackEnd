@@ -1,7 +1,6 @@
 import { Router } from "express";
 import { check } from "express-validator";
 import inputsValidation from "../middlewares/inputsValidate.js";
-import { codeExist, productExist } from "../helpers/dbValidators.js";
 import { getProducts, getProductById, postProduct, putProduct, deleteProduct } from "../controller/product.js";
 
 const router = Router();
