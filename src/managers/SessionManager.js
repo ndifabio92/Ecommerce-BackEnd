@@ -5,9 +5,13 @@ class SessionManager {
     constructor() { }
 
     async login(user) {
-        const manager = new UserManager();
-        const validate = await manager.userValidate(user);
-        return validate;
+        try {
+            const manager = new UserManager();
+            const validate = await manager.userValidate(user);
+            return validate;
+        } catch (error) {
+            throw error;
+        }
     }
 }
 export default SessionManager;

@@ -13,7 +13,6 @@ class UserManager {
 
             return userExist;
         } catch (error) {
-            console.error(error);
             throw error;
         }
     };
@@ -23,7 +22,6 @@ class UserManager {
             await this.getOne(user.email);
             return this.dao.create(user);
         } catch (error) {
-            console.error(error);
             throw error;
         }
     };
@@ -36,7 +34,6 @@ class UserManager {
             return validate;
         } catch (error) {
             console.log(error);
-            throw error;
         }
     }
 }
