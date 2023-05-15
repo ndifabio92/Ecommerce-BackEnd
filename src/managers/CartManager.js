@@ -34,8 +34,7 @@ class CartManager {
 
     async insert(cid, pid) {
         try {
-            const cartExist = await this.dao.getOne(cid);
-            if (!cartExist) throw new Error(`El carrito de compra con el id ${cid} no existe`);
+            await this.getOne(cid);
 
             const { products } = await this.dao.getOne(cid);
 
@@ -59,8 +58,7 @@ class CartManager {
 
     async delete(carId) {
         try {
-            const cartExist = await this.dao.getOne(carId);
-            if (!cartExist) throw new Error(`El carrito de compra con el id ${carId} no existe`);
+            await this.dao.getOne(carId);
 
             const { id } = await this.dao.getOne(carId);
             return this.dao.delete(carId, { _id: id, products: [] });
@@ -74,8 +72,8 @@ class CartManager {
             const productManager = new ProductManager();
             await productManager.getOne(pid);
 
-            const cartExist = await this.dao.getOne(cid);
-            if (!cartExist) throw new Error(`El carrito de compra con el id ${cid} no existe`);
+            await this.getOne(cid);
+
 
             const { id, products } = await this.dao.getOne(cid);
 
@@ -102,12 +100,8 @@ class CartManager {
     async updateItem({ quantity }, cid, pid) {
         try {
             const productManager = new ProductManager();
-
-            const cartExist = await this.dao.getOne(cid);
-            if (!cartExist) throw new Error(`El carrito de compra con el id ${cid} no existe`);
-
+            await this.getOne(cid);
             await productManager.getOne(pid);
-
 
             const { products } = await this.dao.getOne(cid);
             const arrProducts = products.map(item => {
@@ -133,8 +127,7 @@ class CartManager {
 
     async updateProducts(cid, { products }) {
         try {
-            const cartExist = await this.dao.getOne(cid);
-            if (!cartExist) throw new Error(`El carrito de compra con el id ${cid} no existe`);
+            await this.getOne(cid);
 
             const productManager = new ProductManager();
 

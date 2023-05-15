@@ -39,9 +39,9 @@ class ProductManager {
         }
     };
 
-    async getOneCode(code) {
+    async getOneCode(code, id) {
         try {
-            return this.dao.getOneCode(code);
+            return await this.dao.getOneCode(code);
         } catch (error) {
             throw error;
         }
@@ -49,7 +49,7 @@ class ProductManager {
 
     async create(body) {
         try {
-            const codeExist = await this.dao.getOneCode(body.code);
+            const codeExist = await this.getOneCode(body.code, body.id);
             if (codeExist) {
                 if (codeExist?.id.toString() !== body.id) throw new Error("El codigo ingresado ya esta siendo utilizado por otro producto");
             };
@@ -61,10 +61,11 @@ class ProductManager {
 
     async update(id, body) {
         try {
-            const productExist = await this.dao.getOne(id);
-            if (!productExist) throw new Error(`El producto con el id ${id} no existe o se encuentra eliminado`);
+            // const productExist = 
+            await this.getOne(id);
+            // if (!productExist) throw new Error(`El producto con el id ${id} no existe o se encuentra eliminado`);
 
-            const codeExist = await this.dao.getOneCode(body.code);
+            const codeExist = await this.getOneCode(body.code);
             if (codeExist) {
                 if (codeExist?.id.toString() !== id) throw new Error("El codigo ingresado ya esta siendo utilizado por otro producto");
             };
@@ -77,8 +78,7 @@ class ProductManager {
 
     async delete(id) {
         try {
-            const productExist = await this.dao.getOne(id);
-            if (!productExist) throw new Error(`El producto con el id ${id} no existe o se encuentra eliminado`);
+            await this.getOne(id);
 
             return this.dao.delete(id, { status: false }, { new: true });
         } catch (error) {
