@@ -27,6 +27,7 @@ class CartDao {
 
             }
         } catch (error) {
+            console.error(error);
             throw error;
         }
     };
@@ -44,6 +45,7 @@ class CartDao {
                 })
             }
         } catch (error) {
+            console.error(error);
             throw error;
         }
     };
@@ -62,6 +64,7 @@ class CartDao {
                 })
             }
         } catch (error) {
+            console.error(error);
             throw error;
         }
     };
@@ -73,6 +76,7 @@ class CartDao {
                 id: document._id
             }
         } catch (error) {
+            console.error(error);
             throw error;
         }
     };
@@ -107,6 +111,7 @@ class CartDao {
                 })
             }
         } catch (error) {
+            console.error(error);
             throw error;
         }
     };
@@ -124,6 +129,7 @@ class CartDao {
                 })
             }
         } catch (error) {
+            console.error(error);
             throw error;
         }
     };
