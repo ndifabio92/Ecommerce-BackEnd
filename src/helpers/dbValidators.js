@@ -1,32 +1,14 @@
-import ProductManager from "../managers/ProductManager.js";
-import CartManager from "../managers/CartManager.js";
+import bcrypt from 'bcrypt';
+import jwt from "jsonwebtoken";
 
-export const codeExist = async (code = "") => {
-    try {
-        const manager = new ProductManager();
-        const isExist = await manager.getOneCode(code);
-        if (isExist) throw new Error(`El codigo ${code} ya existe`);
-    } catch (error) {
-        throw error;
-    }
-};
+export const createHash = async (password) => {
+    return await bcrypt.hash(password, 10)
+}
 
-export const productExist = async (id = "") => {
-    try {
-        const manager = new ProductManager();
-        const isExist = await manager.getOne(id);
-        if (!isExist) throw new Error(`El producto con el id ${id} no existe o se encuentra eliminado`);
-    } catch (error) {
-        throw error;
-    }
-};
+export const isValidPassword = async (password, passwordHash) => {
+    return await bcrypt.compare(password, passwordHash);
+}
 
-export const cartExist = async (id = "") => {
-    try {
-        const manager = new CartManager();
-        const isExist = await manager.getOne(id);
-        if (!isExist) throw new Error(`El carrito de compra con el id ${id} no existe`);
-    } catch (error) {
-        throw error;
-    }
-};
+export const generateToken = async (user) => {
+    return await jwt.sign({ user: { ...user, password: undefined } }, process.env.PRIVATE_KEY, { expiresIn: '1m' });
+}
