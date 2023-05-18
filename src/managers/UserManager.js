@@ -26,14 +26,14 @@ class UserManager {
         }
     };
 
-    async userValidate(user) {
+    async userValidate(email) {
         try {
-            const validate = await this.dao.validateUser(user);
+            const validate = await this.dao.validateUser(email);
             if (!validate) throw new Error(`El email ${email} ya se encuentra registrado.`);
 
             return validate;
         } catch (error) {
-            console.log(error);
+            throw error;
         }
     }
 }

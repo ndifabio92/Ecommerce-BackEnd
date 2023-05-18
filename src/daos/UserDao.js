@@ -34,13 +34,14 @@ class UserDao {
         }
     }
 
-    async validateUser({ email, password }) {
+    async validateUser(email) {
         try {
-            const document = await User.findOne({ email, password });
+            const document = await User.findOne({ email });
 
             if (!document) return null;
             return {
                 id: document._id,
+                password: document.password,
                 email: document.email
             };
         } catch (error) {
