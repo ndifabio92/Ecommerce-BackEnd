@@ -2,6 +2,7 @@ import { Router } from "express";
 import { check } from "express-validator";
 import inputsValidation from "../middlewares/inputsValidate.js";
 import { getProducts, getProductById, postProduct, putProduct, deleteProduct } from "../controller/product.js";
+import auth from "../middlewares/auth.js";
 
 const router = Router();
 
@@ -34,6 +35,7 @@ router.put('/:pid', [
 ], putProduct);
 
 router.delete('/:pid', [
+    auth,
     check('pid', 'No es un id valido').isMongoId(),
     check('pid').escape(),
     inputsValidation
