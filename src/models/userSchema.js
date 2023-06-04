@@ -1,4 +1,5 @@
 import { Schema, model } from "mongoose";
+import {ObjectId} from "mongodb";
 
 const UserSchema = new Schema({
     firstName: {
@@ -21,6 +22,15 @@ const UserSchema = new Schema({
     password: {
         type: String,
         required: [true, "El password es obligatorio"]
+    },
+    cart: {
+        type: ObjectId,
+        ref: 'Cart',
+    },
+    role: {
+        type: String,
+        enum: ['ROLE_USER','ROLE_ADMIN'],
+        default: 'ROLE_USER'
     }
 });
 
