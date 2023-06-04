@@ -1,5 +1,6 @@
 import express from 'express';
 import cors from 'cors';
+import cookieParser from "cookie-parser";
 import { products, shoppingCart, users, session } from '../routes/index.js';
 import dbConnection from '../database/config.js';
 class Server {
@@ -25,6 +26,7 @@ class Server {
         this.app.use(express.json());
         this.app.use(express.urlencoded({ extended: true }));
         this.app.use(cors());
+        this.app.use(cookieParser());
     }
 
     routes() {

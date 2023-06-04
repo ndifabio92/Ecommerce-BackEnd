@@ -6,7 +6,10 @@ export const login = async (req = request, res = response) => {
 
         const manager = new SessionManager();
         const user = await manager.login(req.body);
-        res.send({ status: "success", message: "login exitoso", user });
+        res.cookie('accessToken', user, {
+            maxAge: 60*60*1000,
+            httpOnly: true
+        }).send({ status: "success", message: "login exitoso", user });
 
     } catch (error) {
         res.status(500).send({ error: error.massage });
@@ -18,6 +21,14 @@ export const logout = async (req = request, res = response) => {
     try {
         res.status(200).send({ status: 'success', message: "logout exitoso" });
 
+    } catch (error) {
+        res.status(500).send({ error: error.massage });
+    }
+};
+
+export const current = async (req = request, res = response) => {
+    try {
+        res.status(200).send({ status: 'Success', payload: req.user });
     } catch (error) {
         res.status(500).send({ error: error.massage });
     }
