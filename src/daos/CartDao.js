@@ -4,13 +4,12 @@ class CartDao {
 
     async getOne(id) {
         try {
-            const document = await Cart.findById(id).populate('products._id');
-
+            const document = await Cart.findById(id).populate('products.id');
             if (!document) return null;
             return {
                 id: document._id,
                 products: document.products.map(item => {
-                    const { _id: product } = item;
+                    const { id: product } = item;
                     return {
                         id: product._id,
                         quantity: item.quantity,
