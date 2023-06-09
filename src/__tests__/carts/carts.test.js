@@ -1,14 +1,14 @@
 import { expect, jest, test } from '@jest/globals';
 import mongoose from 'mongoose';
 import supertest from 'supertest';
-import server from '../../app.js';
-import Product from '../../models/productSchema.js';
-import Cart from '../../models/cartSchema.js';
+import server from '../../index.js';
+import Product from '../../data/models/productSchema.js';
+import Cart from '../../data/models/cartSchema.js';
 import initialProducts from '../mock/mock-products.json';
 import initialCarts from '../mock/mock-carts.json';
 import initialCartsResponse from '../mock/mock-carts-response.json';
-import { getCartById, postProductByCartId } from '../../controller/shoppingCart.js';
-import { postProduct } from '../../controller/product.js';
+import { getCartById, postProductByCartId } from '../../presentation/controller/shoppingCart.js';
+import { postProduct } from '../../presentation/controller/product.js';
 
 const api = supertest(server.app);
 

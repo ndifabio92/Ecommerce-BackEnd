@@ -1,5 +1,5 @@
 import { request, response } from "express";
-import ProductManager from "../managers/ProductManager.js";
+import ProductManager from "../../domain/managers/ProductManager.js";
 
 
 export const getProducts = async (req = request, res = response) => {

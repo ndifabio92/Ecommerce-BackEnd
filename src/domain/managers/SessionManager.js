@@ -1,5 +1,5 @@
 
-import { generateToken, isValidPassword } from "../shared/sessionShared.js";
+import { generateToken, isValidPassword } from "../../shared/sessionShared.js";
 import UserManager from "./UserManager.js";
 
 class SessionManager {

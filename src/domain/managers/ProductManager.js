@@ -1,4 +1,4 @@
-import ProductDao from "../daos/ProductDao.js";
+import ProductDao from "../../data/daos/ProductDao.js";
 
 class ProductManager {
 

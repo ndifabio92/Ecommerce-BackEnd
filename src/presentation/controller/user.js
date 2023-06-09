@@ -1,6 +1,6 @@
 import { request, response } from "express";
-import UserManager from "../managers/UserManager.js";
-import { createHash } from "../shared/sessionShared.js";
+import UserManager from "../../domain/managers/UserManager.js";
+import { createHash } from "../../shared/sessionShared.js";
 
 export const postUser = async (req = request, res = response) => {
     try {

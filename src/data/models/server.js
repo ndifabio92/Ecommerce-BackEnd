@@ -1,7 +1,7 @@
 import express from 'express';
 import cors from 'cors';
 import cookieParser from "cookie-parser";
-import { products, shoppingCart, users, session } from '../routes/index.js';
+import { products, shoppingCart, users, session } from '../../presentation/routes/index.js';
 import dbConnection from '../database/config.js';
 class Server {
 
