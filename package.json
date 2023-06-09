@@ -2,11 +2,11 @@
   "name": "ecommerce-backend",
   "version": "1.0.0",
   "description": "ecommerce",
-  "main": "app.js",
+  "main": "index.js",
   "type": "module",
   "scripts": {
-    "start": "cross-env NODE_ENV=dev node src/app",
-    "dev": "nodemon src/app",
+    "start": "cross-env NODE_ENV=dev node src/index",
+    "dev": "nodemon src/index",
     "test": "cross-env NODE_ENV=test && NODE_OPTIONS=--experimental-vm-modules npx jest"
   },
   "repository": {

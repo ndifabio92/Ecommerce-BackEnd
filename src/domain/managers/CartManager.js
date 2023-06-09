@@ -1,4 +1,4 @@
-import CartDao from "../daos/CartDao.js";
+import CartDao from "../../data/daos/CartDao.js";
 import ProductManager from "./ProductManager.js";
 
 class CartManager {
