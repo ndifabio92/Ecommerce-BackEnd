@@ -1,5 +1,5 @@
 import { request, response } from "express";
-import CartManager from "../managers/CartManager.js";
+import CartManager from "../../domain/managers/CartManager.js";
 
 export const getCartById = async (req = request, res = response) => {
     try {
