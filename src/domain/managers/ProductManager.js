@@ -1,9 +1,9 @@
-import ProductDao from "../../data/daos/ProductDao.js";
+import container from "../../container.js";
 
 class ProductManager {
 
     constructor() {
-        this.dao = new ProductDao();
+        this.repository = container.resolve('ProductRepository');
     };
 
     async getAll(paginate) {
@@ -22,7 +22,7 @@ class ProductManager {
                 [params?.type]: params?.value
             };
 
-            return this.dao.getAll(filters, options);
+            return this.repository.getAll(filters, options);
         } catch (error) {
             throw error;
         }
@@ -30,7 +30,7 @@ class ProductManager {
 
     async getOne(id) {
         try {
-            const product = await this.dao.getOne(id);
+            const product = await this.repository.getOne(id);
             if (!product) throw new Error(`El producto con el id ${id} no existe o se encuentra eliminado`);
 
             return product;
@@ -41,7 +41,7 @@ class ProductManager {
 
     async getOneCode(code, id) {
         try {
-            return await this.dao.getOneCode(code);
+            return await this.repository.getOneCode(code);
         } catch (error) {
             throw error;
         }
@@ -53,7 +53,7 @@ class ProductManager {
             if (codeExist) {
                 if (codeExist?.id.toString() !== body.id) throw new Error("El codigo ingresado ya esta siendo utilizado por otro producto");
             };
-            return this.dao.create(body);
+            return this.repository.create(body);
         } catch (error) {
             throw error;
         }
@@ -70,7 +70,7 @@ class ProductManager {
                 if (codeExist?.id.toString() !== id) throw new Error("El codigo ingresado ya esta siendo utilizado por otro producto");
             };
 
-            return this.dao.update(id, body, { new: true });
+            return this.repository.update(id, body, { new: true });
         } catch (error) {
             throw error;
         }
@@ -80,7 +80,7 @@ class ProductManager {
         try {
             await this.getOne(id);
 
-            return this.dao.delete(id, { status: false }, { new: true });
+            return this.repository.delete(id, { status: false }, { new: true });
         } catch (error) {
             throw error;
         }

@@ -1,40 +1,45 @@
 version: "3"
 
 services:
-  ecommerceDB:
-    container_name: ${MONGO_DB_NAME}
+  ecommerce-db:
+    container_name: ${DB_NAME}
     image: mongo:6.0
     volumes:
       - app-vol:/data/db
     restart: always
-  #    environment:
-  #      MONGO_INITDB_ROOT_USERNAME: admin
-  #      MONGO_INITDB_ROOT_PASSWORD: pass
-  #    command: [ "--auth" ]
+    # environment:
+    #   MONGO_INITDB_ROOT_USERNAME: admin
+    #   MONGO_INITDB_ROOT_PASSWORD: pass
+    # command: [ "--auth" ]
 
   mongo-express:
     depends_on:
-      - ecommerceDB
+      - ecommerce-db
     image: mongo-express:1.0.0-alpha.4
     ports:
       - 8080:8081
     restart: always
     environment:
-      #      ME_CONFIG_MONGODB_ADMINUSERNAME: admin
-      #      ME_CONFIG_MONGODB_ADMINPASSWORD: pass
-      ME_CONFIG_MONGODB_SERVER: ${MONGO_DB_NAME}
+      # ME_CONFIG_MONGODB_ADMINUSERNAME: admin
+      # ME_CONFIG_MONGODB_ADMINPASSWORD: pass
+      ME_CONFIG_MONGODB_SERVER: ${DB_NAME}
 
-  ecommerceBack:
+  ecommerce-back:
     depends_on:
-      - ecommerceDB
+      - ecommerce-db
       - mongo-express
     container_name: "ecommerce-server"
-    image: ndifabio/ecommerce-server:1.0.1
+    build:
+      context: ./
+      dockerfile: Dockerfile
     ports:
       - 8000:8000
     environment:
-      MONGO_DB_URI: mongodb://ecommerceDB:27017/
-      MONGO_DB_NAME: ${MONGO_DB_NAME}
+      PRIVATE_KEY: secretkey
+      APPLICATION: AppExpress
+      DB: MongooseAdapter
+      DB_URI: mongodb://ecommerce-db:27017/
+      DB_NAME: ${DB_NAME}
       PORT: ${PORT}
     restart: always
 

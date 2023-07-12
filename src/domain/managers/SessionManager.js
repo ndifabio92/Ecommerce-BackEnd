@@ -1,5 +1,4 @@
-
-import { generateToken, isValidPassword } from "../../shared/sessionShared.js";
+import {generateToken, isValidPassword} from "../../shared/sessionShared.js";
 import UserManager from "./UserManager.js";
 
 class SessionManager {
@@ -17,9 +16,7 @@ class SessionManager {
                 throw new Error("Login failed, invalid password.");
             }
 
-            const accessToken = await generateToken(user);
-
-            return accessToken;
+            return await generateToken(user);
         } catch (error) {
             throw error;
         }

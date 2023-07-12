@@ -1,12 +1,11 @@
 import * as dotenv from 'dotenv';
-import Server from './data/models/server.js';
+import AppFactory from "./presentation/factories/appFactory.js";
 
 const { NODE_ENV } = process.env;
 const env = NODE_ENV === 'test' ? '.env.test' : '.env';
 dotenv.config({ path: env });
 
-const server = new Server();
-
+const server = AppFactory.create(process.env.APPLICATION);
 server.start();
 
 

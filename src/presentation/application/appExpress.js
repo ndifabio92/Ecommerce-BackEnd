@@ -1,9 +1,10 @@
 import express from 'express';
 import cors from 'cors';
 import cookieParser from "cookie-parser";
-import { products, shoppingCart, users, session } from '../../presentation/routes/index.js';
-import dbConnection from '../database/config.js';
-class Server {
+import { products, shoppingCart, users, session } from '../routes/index.js';
+import dbConnection from '../../data/factories/mongooseAdapter.js';
+import DbFactory from "../../data/factories/dbFactory.js";
+class AppExpress {
 
     constructor() {
         this.app = express();
@@ -13,13 +14,14 @@ class Server {
         this.middlewares();
         this.routes();
 
-        if (Server.instance) return Server.instance;
+        if (AppExpress.instance) return AppExpress.instance;
 
-        Server.instance = this;
+        AppExpress.instance = this;
     }
 
     async connectDB() {
-        await dbConnection.connect();
+        const db = DbFactory.create(process.env.DB);
+        db.connect();
     }
 
     middlewares() {
@@ -48,4 +50,4 @@ class Server {
 
 }
 
-export default Server;
+export default AppExpress;

@@ -21,6 +21,7 @@
   },
   "homepage": "https://github.com/ndifabio92/Ecommerce-BackEnd#readme",
   "dependencies": {
+    "awilix": "^8.0.1",
     "bcrypt": "^5.1.0",
     "cookie-parser": "^1.4.6",
     "cors": "^2.8.5",

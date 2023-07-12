@@ -2,7 +2,7 @@
 
 ## Introduccion
 
-La aplicacion es un backEnd de un ecommerce
+La aplicacion es un back-end de un ecommerce
 
 ## Stack Tecnologico
 
@@ -11,6 +11,11 @@ a su vez trabaja con una
 base de datos **NoSQL [MongoDB](https://www.mongodb.com/docs/manual/)** que utiliza el
 **ODM [Mongoose](https://mongoosejs.com/docs/guide.html)**.
 
-Arquitectura en capas.
-
-Test con jest
+- Arquitectura en capas (data , domain, presentation )
+- Test unitarios e intreagales con jest
+- Inyeccion de dependencias con awilix
+- Dockerfile - docker-compose
+- Seguridad con JWT
+- Patrones de diseños Repository, Factory
+- Entity
+- Manejo de Middlewares

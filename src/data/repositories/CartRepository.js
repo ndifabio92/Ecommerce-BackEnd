@@ -1,30 +1,30 @@
-import Cart from "../models/cartSchema.js";
+import CartSchema from "../models/cartSchema.js";
+import Cart from "../../domain/entities/Cart.js";
 
-class CartDao {
-
+class CartRepository {
     async getOne(id) {
         try {
-            const document = await Cart.findById(id).populate('products.id');
+            const document = await CartSchema.findById(id).populate('products.id');
             if (!document) return null;
-            return {
+            return new Cart({
                 id: document._id,
-                products: document.products.map(item => {
-                    const { id: product } = item;
-                    return {
-                        id: product._id,
-                        quantity: item.quantity,
-                        title: product.title,
-                        description: product.description,
-                        code: product.code,
-                        price: product.price,
-                        status: product.status,
-                        stock: product.stock,
-                        category: product.category,
-                        thumbnail: product.thumbnail,
-                    }
-                }),
-
-            }
+                products: document.products
+                    // .map(item => {
+                    // const {id: product} = item;
+                    // return {
+                    //     id: product._id,
+                    //     quantity: item.quantity,
+                    //     title: product.title,
+                    //     description: product.description,
+                    //     code: product.code,
+                    //     price: product.price,
+                    //     status: product.status,
+                    //     stock: product.stock,
+                    //     category: product.category,
+                    //     thumbnail: product.thumbnail,
+                    // }
+                // }),
+            })
         } catch (error) {
             console.error(error);
             throw error;
@@ -33,7 +33,7 @@ class CartDao {
 
     async create(data) {
         try {
-            const document = await Cart.create(data);
+            const document = await CartSchema.create(data);
             return {
                 id: document._id,
                 products: document.products.map(item => {
@@ -51,7 +51,7 @@ class CartDao {
 
     async insert(cid, body) {
         try {
-            const document = await Cart.findOneAndUpdate({ _id: cid }, body, { new: true });
+            const document = await CartSchema.findOneAndUpdate({_id: cid}, body, {new: true});
 
             return {
                 id: document._id,
@@ -70,7 +70,7 @@ class CartDao {
 
     async delete(id, cart) {
         try {
-            const document = await Cart.findByIdAndUpdate({ _id: id }, cart, { new: true });
+            const document = await CartSchema.findByIdAndUpdate({_id: id}, cart, {new: true});
             return {
                 id: document._id
             }
@@ -82,7 +82,7 @@ class CartDao {
 
     async deleteItem(cid, newProducts) {
         try {
-            const document = await Cart.findByIdAndUpdate({ _id: cid }, newProducts, { new: true });
+            const document = await CartSchema.findByIdAndUpdate({_id: cid}, newProducts, {new: true});
             return {
                 id: document._id,
                 products: document.products.map(item => {
@@ -99,7 +99,7 @@ class CartDao {
 
     async updateItem(cid, cart) {
         try {
-            const document = await Cart.findByIdAndUpdate({ _id: cid }, cart, { new: true })
+            const document = await CartSchema.findByIdAndUpdate({_id: cid}, cart, {new: true})
             return {
                 id: document._id,
                 products: document.products.map(item => {
@@ -117,7 +117,7 @@ class CartDao {
 
     async updateProducts(cid, body) {
         try {
-            const document = await Cart.findByIdAndUpdate({ _id: cid }, body, { new: true });
+            const document = await CartSchema.findByIdAndUpdate({_id: cid}, body, {new: true});
             return {
                 id: document._id,
                 products: document.products.map(item => {
@@ -134,4 +134,4 @@ class CartDao {
     };
 }
 
-export default CartDao;
+export default CartRepository;
