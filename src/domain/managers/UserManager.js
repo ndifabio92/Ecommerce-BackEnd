@@ -1,14 +1,14 @@
-import UserDao from "../../data/daos/UserDao.js";
+import container from "../../container.js";
 
 class UserManager {
 
     constructor() {
-        this.dao = new UserDao();
+        this.repository = container.resolve('UserRepository');
     }
 
     async getOne(email) {
         try {
-            const userExist = await this.dao.getOne(email);
+            const userExist = await this.repository.getOne(email);
             if (userExist) throw new Error(`El email ${email} ya se encuentra registrado.`);
 
             return userExist;
@@ -20,7 +20,7 @@ class UserManager {
     async create(user) {
         try {
             await this.getOne(user.email);
-            return this.dao.create(user);
+            return this.repository.create(user);
         } catch (error) {
             throw error;
         }
@@ -28,7 +28,7 @@ class UserManager {
 
     async userValidate(email) {
         try {
-            const validate = await this.dao.validateUser(email);
+            const validate = await this.repository.validateUser(email);
             if (!validate) throw new Error(`El email ${email} ya se encuentra registrado.`);
 
             return validate;

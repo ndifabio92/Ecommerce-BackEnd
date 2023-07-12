@@ -1,11 +1,11 @@
-import Product from "../models/productSchema.js";
+import ProductSchema from "../models/productSchema.js";
+import Product from "../../domain/entities/Product.js";
 
-
-class ProductDao {
+class ProductRepository {
     async getAll(filters, options) {
         try {
-            const { docs, ...rest } = await Product.paginate(filters, options);
-            const dto = docs.map(item => ({
+            const {docs, ...pagination} = await ProductSchema.paginate(filters, options);
+            const products = docs.map(item => new Product({
                 id: item._id,
                 title: item.title,
                 description: item.description,
@@ -17,7 +17,10 @@ class ProductDao {
                 thumbnail: item.thumbnail
             }));
 
-            return { payload: dto, ...rest };
+            return {
+                products,
+                ...pagination
+            };
         } catch (error) {
             console.error(error);
             throw error;
@@ -26,10 +29,10 @@ class ProductDao {
 
     async getOne(id) {
         try {
-            const document = await Product.findById(id).where({ status: true });
+            const document = await ProductSchema.findById(id).where({status: true});
             if (!document) return null;
 
-            return {
+            return new Product({
                 id: document._id,
                 title: document.title,
                 description: document.description,
@@ -39,7 +42,7 @@ class ProductDao {
                 stock: document.stock,
                 category: document.category,
                 thumbnail: document.thumbnail
-            }
+            })
         } catch (error) {
             console.error(error);
             throw error;
@@ -48,9 +51,9 @@ class ProductDao {
 
     async getOneCode(code) {
         try {
-            const document = await Product.findOne({ code }, { status: true });
+            const document = await ProductSchema.findOne({code}, {status: true});
             if (!document) return null;
-            return {
+            return new Product({
                 id: document._id,
                 title: document.title,
                 description: document.description,
@@ -60,7 +63,7 @@ class ProductDao {
                 stock: document.stock,
                 category: document.category,
                 thumbnail: document.thumbnail
-            }
+            })
         } catch (error) {
             console.error(error);
             throw error;
@@ -69,8 +72,8 @@ class ProductDao {
 
     async create(data) {
         try {
-            const document = await Product.create(data);
-            return {
+            const document = await ProductSchema.create(data);
+            return new Product({
                 id: document._id,
                 title: document.title,
                 description: document.description,
@@ -80,7 +83,7 @@ class ProductDao {
                 stock: document.stock,
                 category: document.category,
                 thumbnail: document.thumbnail
-            }
+            })
         } catch (error) {
             console.error(error);
             throw error;
@@ -89,8 +92,8 @@ class ProductDao {
 
     async update(id, body) {
         try {
-            const document = await Product.findByIdAndUpdate(id, body, { new: true });
-            return {
+            const document = await ProductSchema.findByIdAndUpdate(id, body, {new: true});
+            return new Product({
                 id: document._id,
                 title: document.title,
                 description: document.description,
@@ -100,7 +103,7 @@ class ProductDao {
                 stock: document.stock,
                 category: document.category,
                 thumbnail: document.thumbnail
-            }
+            })
         } catch (error) {
             console.error(error);
             throw error;
@@ -109,8 +112,8 @@ class ProductDao {
 
     async delete(id) {
         try {
-            const document = await Product.findByIdAndUpdate(id, { status: false }, { new: true });
-            return {
+            const document = await ProductSchema.findByIdAndUpdate(id, {status: false}, {new: true});
+            return new Product({
                 id: document._id,
                 title: document.title,
                 description: document.description,
@@ -120,7 +123,7 @@ class ProductDao {
                 stock: document.stock,
                 category: document.category,
                 thumbnail: document.thumbnail
-            }
+            })
         } catch (error) {
             console.error(error);
             throw error;
@@ -128,4 +131,4 @@ class ProductDao {
     }
 }
 
-export default ProductDao;
+export default ProductRepository;

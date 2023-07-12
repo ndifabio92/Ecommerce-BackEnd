@@ -1,6 +1,6 @@
 import { expect, test } from '@jest/globals';
 import mongoose from 'mongoose';
-import dbConnection from '../../data/database/config.js';
+import dbConnection from '../../data/factories/mongooseAdapter.js';
 
 afterAll(async () => {
     await mongoose.connection.close();
