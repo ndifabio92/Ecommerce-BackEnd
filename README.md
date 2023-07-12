@@ -12,9 +12,9 @@ base de datos **NoSQL [MongoDB](https://www.mongodb.com/docs/manual/)** que util
 **ODM [Mongoose](https://mongoosejs.com/docs/guide.html)**.
 
 - Arquitectura en capas
-    - data
-    - domain
-    - presentation
+    - Data
+    - Domain
+    - Presentation
 - Test unitarios e intreagales con jest
 - Inyeccion de dependencias con awilix
 - Dockerfile - docker-compose
