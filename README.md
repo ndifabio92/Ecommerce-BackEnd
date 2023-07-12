@@ -11,11 +11,17 @@ a su vez trabaja con una
 base de datos **NoSQL [MongoDB](https://www.mongodb.com/docs/manual/)** que utiliza el
 **ODM [Mongoose](https://mongoosejs.com/docs/guide.html)**.
 
-- Arquitectura en capas (data , domain, presentation )
+- Arquitectura en capas
+    - data
+    - domain
+    - presentation
 - Test unitarios e intreagales con jest
 - Inyeccion de dependencias con awilix
 - Dockerfile - docker-compose
 - Seguridad con JWT
-- Patrones de diseños Repository, Factory
+- Patrones de diseños
+    - Singleton
+    - Repository
+    - Factory
 - Entity
 - Manejo de Middlewares
