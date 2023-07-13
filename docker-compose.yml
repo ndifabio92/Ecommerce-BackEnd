@@ -42,6 +42,9 @@ services:
       DB_NAME: ${DB_NAME}
       PORT: ${PORT}
     restart: always
+    volumes:
+      - ./src:/app/src
+      - ./.env:/app/.env
 
 volumes:
   app-vol:
