@@ -1,4 +1,4 @@
-class Product {
+class ProductEntity {
     constructor(props) {
         this.id = props.id;
         this.title = props.title;
@@ -13,4 +13,4 @@ class Product {
     }
 }
 
-export default Product;
+export default ProductEntity;

@@ -1,7 +1,7 @@
 import { Router } from "express";
 import { check } from "express-validator";
 import inputsValidation from "../middlewares/inputsValidate.js";
-import { postUser } from "../controller/user.js";
+import { postUser } from "../controller/userController.js";
 
 
 const router = Router();

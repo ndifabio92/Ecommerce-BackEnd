@@ -1,6 +1,7 @@
-import products from './products.js';
-import shoppingCart from './shoppingCart.js';
-import users from './users.js';
-import session from './session.js';
+import productRoute from './productRoute.js';
+import cartRoute from './cartRoute.js';
+import userRoute from './userRoute.js';
+import sessionRoute from './sessionRoute.js';
+import emailRoute from "./emailRoute.js";
 
-export { products, shoppingCart, users, session };
+export { productRoute, cartRoute, userRoute, sessionRoute, emailRoute };

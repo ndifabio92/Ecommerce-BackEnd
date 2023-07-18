@@ -7,8 +7,8 @@ import Cart from '../../data/models/cartSchema.js';
 import initialProducts from '../mock/mock-products.json';
 import initialCarts from '../mock/mock-carts.json';
 import initialCartsResponse from '../mock/mock-carts-response.json';
-import { getCartById, postProductByCartId } from '../../presentation/controller/shoppingCart.js';
-import { postProduct } from '../../presentation/controller/product.js';
+import { getCartById, postProductByCartId } from '../../presentation/controller/cartController.js';
+import { postProduct } from '../../presentation/controller/productController.js';
 
 const api = supertest(server.app);
 

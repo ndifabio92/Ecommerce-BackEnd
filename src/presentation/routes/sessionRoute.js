@@ -1,7 +1,7 @@
 import { Router } from "express";
 import { check } from "express-validator";
 import inputsValidation from "../middlewares/inputsValidate.js";
-import {current, login, logout} from "../controller/session.js";
+import {current, login, logout} from "../controller/sessionController.js";
 import auth from "../middlewares/auth.js";
 
 const router = Router();

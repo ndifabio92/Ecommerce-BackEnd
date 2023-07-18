@@ -46,6 +46,13 @@ services:
       - ./src:/app/src
       - ./.env:/app/.env
 
+  mail:
+    container_name: mail
+    restart: always
+    image: mailhog/mailhog:latest
+    ports:
+      - 8025:8025
+
 volumes:
   app-vol:
     external: false

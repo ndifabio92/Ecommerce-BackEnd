@@ -1,9 +1,9 @@
 import express from 'express';
 import cors from 'cors';
 import cookieParser from "cookie-parser";
-import { products, shoppingCart, users, session } from '../routes/index.js';
-import dbConnection from '../../data/factories/mongooseAdapter.js';
+import {productRoute, cartRoute, emailRoute, userRoute, sessionRoute} from '../routes/index.js';
 import DbFactory from "../../data/factories/dbFactory.js";
+
 class AppExpress {
 
     constructor() {
@@ -26,16 +26,17 @@ class AppExpress {
 
     middlewares() {
         this.app.use(express.json());
-        this.app.use(express.urlencoded({ extended: true }));
+        this.app.use(express.urlencoded({extended: true}));
         this.app.use(cors());
         this.app.use(cookieParser());
     }
 
     routes() {
-        this.app.use('/api/products', products);
-        this.app.use('/api/carts', shoppingCart);
-        this.app.use('/api/signup', users);
-        this.app.use('/api/session', session);
+        this.app.use('/api/products', productRoute);
+        this.app.use('/api/carts', cartRoute);
+        this.app.use('/api/signup', userRoute);
+        this.app.use('/api/session', sessionRoute);
+        this.app.use('/api/email', emailRoute);
     }
 
     start() {
