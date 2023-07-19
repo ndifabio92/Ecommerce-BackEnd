@@ -1,4 +1,4 @@
-class User {
+class UserEntity {
     constructor(props) {
         this.id = props._id;
         this.firstName = props.firstName;
@@ -11,4 +11,4 @@ class User {
     }
 }
 
-export default User;
+export default UserEntity;

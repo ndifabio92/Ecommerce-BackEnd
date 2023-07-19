@@ -1,7 +1,7 @@
 import { Router } from "express";
 import { check } from "express-validator";
 import inputsValidation from "../middlewares/inputsValidate.js";
-import { getProducts, getProductById, postProduct, putProduct, deleteProduct } from "../controller/product.js";
+import { getProducts, getProductById, postProduct, putProduct, deleteProduct } from "../controller/productController.js";
 import auth from "../middlewares/auth.js";
 
 const router = Router();

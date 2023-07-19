@@ -1,9 +1,9 @@
-import Product from "./Product.js";
+import ProductEntity from "./ProductEntity.js";
 
-class Cart {
+class CartEntity {
     constructor(props) {
         this.id = props.id;
-        this.products = props.products.map(item => new Product({
+        this.products = props.products.map(item => new ProductEntity({
             id: item.id._id,
             quantity: item.id.quantity,
             title: item.id.title,
@@ -18,4 +18,4 @@ class Cart {
     }
 }
 
-export default Cart;
+export default CartEntity;

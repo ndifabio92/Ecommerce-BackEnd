@@ -1,11 +1,11 @@
 import ProductSchema from "../models/productSchema.js";
-import Product from "../../domain/entities/Product.js";
+import ProductEntity from "../../domain/entities/ProductEntity.js";
 
 class ProductRepository {
     async getAll(filters, options) {
         try {
             const {docs, ...pagination} = await ProductSchema.paginate(filters, options);
-            const products = docs.map(item => new Product({
+            const products = docs.map(item => new ProductEntity({
                 id: item._id,
                 title: item.title,
                 description: item.description,
@@ -32,7 +32,7 @@ class ProductRepository {
             const document = await ProductSchema.findById(id).where({status: true});
             if (!document) return null;
 
-            return new Product({
+            return new ProductEntity({
                 id: document._id,
                 title: document.title,
                 description: document.description,
@@ -53,7 +53,7 @@ class ProductRepository {
         try {
             const document = await ProductSchema.findOne({code}, {status: true});
             if (!document) return null;
-            return new Product({
+            return new ProductEntity({
                 id: document._id,
                 title: document.title,
                 description: document.description,
@@ -73,7 +73,7 @@ class ProductRepository {
     async create(data) {
         try {
             const document = await ProductSchema.create(data);
-            return new Product({
+            return new ProductEntity({
                 id: document._id,
                 title: document.title,
                 description: document.description,
@@ -93,7 +93,7 @@ class ProductRepository {
     async update(id, body) {
         try {
             const document = await ProductSchema.findByIdAndUpdate(id, body, {new: true});
-            return new Product({
+            return new ProductEntity({
                 id: document._id,
                 title: document.title,
                 description: document.description,
@@ -113,7 +113,7 @@ class ProductRepository {
     async delete(id) {
         try {
             const document = await ProductSchema.findByIdAndUpdate(id, {status: false}, {new: true});
-            return new Product({
+            return new ProductEntity({
                 id: document._id,
                 title: document.title,
                 description: document.description,

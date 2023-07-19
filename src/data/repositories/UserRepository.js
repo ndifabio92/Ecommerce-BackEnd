@@ -1,5 +1,5 @@
 import UserSchema from "../models/userSchema.js";
-import User from "../../domain/entities/User.js";
+import UserEntity from "../../domain/entities/UserEntity.js";
 
 class UserRepository {
     async getOne(email) {
@@ -8,7 +8,7 @@ class UserRepository {
             if (!document) return null;
 
             const {_id, __v, ...rest} = document;
-            return new User({
+            return new UserEntity({
                 id: _id,
                 ...rest
             })
@@ -22,7 +22,7 @@ class UserRepository {
         try {
             const document = await UserSchema.create(user);
             const {_id, password, __v} = document;
-            return new User({
+            return new UserEntity({
                 id: _id,
                 firstName: document.firstName,
                 lastName: document.lastName,
@@ -40,7 +40,7 @@ class UserRepository {
             const document = await UserSchema.findOne({email});
 
             if (!document) return null;
-            return new User({
+            return new UserEntity({
                 id: document._id,
                 password: document.password,
                 email: document.email

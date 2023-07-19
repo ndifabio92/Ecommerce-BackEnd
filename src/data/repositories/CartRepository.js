@@ -1,12 +1,12 @@
 import CartSchema from "../models/cartSchema.js";
-import Cart from "../../domain/entities/Cart.js";
+import CartEntity from "../../domain/entities/CartEntity.js";
 
 class CartRepository {
     async getOne(id) {
         try {
             const document = await CartSchema.findById(id).populate('products.id');
             if (!document) return null;
-            return new Cart({
+            return new CartEntity({
                 id: document._id,
                 products: document.products
                     // .map(item => {
