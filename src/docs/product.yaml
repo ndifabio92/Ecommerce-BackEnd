@@ -49,6 +49,26 @@ paths:
       summary: Create Product
       tags:
         - Products
+      requestBody:
+        description: Request Body
+        content:
+          application/json:
+            schema:
+              example:
+                {
+                  "title": "producto prueba",
+                  "description": "Este es un producto prueba",
+                  "code": "aaa1",
+                  "price": 50,
+                  "status": true,
+                  "category": "productos",
+                  "stock": 10,
+                  "thumbnail": [
+                    "path1",
+                    "path",
+                    "path3"
+                  ]
+                }
       responses:
         "200":
           description: "Success"
@@ -88,7 +108,7 @@ paths:
 
   /api/products/{uid}:
     get:
-      summary: Get Product By Id
+      summary: Get Product by Id
       tags:
         - Products
       parameters:
@@ -122,6 +142,21 @@ paths:
                     ]
                   }
                 }
+        "400":
+          description: "Bad Request"
+          content:
+            application/json:
+              example:
+                {
+                  "errors": [
+                    {
+                      "value": "643c0c7701d8fb15b03506ffa",
+                      "msg": "No es un id valido",
+                      "param": "pid",
+                      "location": "params"
+                    }
+                  ]
+                }
         "404":
           description: "Not Found"
           content:
@@ -132,6 +167,7 @@ paths:
                 }
         "500":
           description: Internal Error Server
+
     delete:
       summary: Delete Product By Id
       tags:
@@ -167,6 +203,21 @@ paths:
                     ]
                   }
                 }
+        "400":
+          description: "Bad Request"
+          content:
+            application/json:
+              example:
+                {
+                  "errors": [
+                    {
+                      "value": "643c0c7701d8fb15b03506ffa",
+                      "msg": "No es un id valido",
+                      "param": "pid",
+                      "location": "params"
+                    }
+                  ]
+                }
         "403":
           description: "Forbidden"
           content:
@@ -185,6 +236,7 @@ paths:
                 }
         "500":
           description: Internal Error Server
+
     put:
       summary: Updated Product By Id
       tags:
@@ -196,6 +248,26 @@ paths:
           description: Id to updated
           schema:
             $type: ObjectId
+      requestBody:
+        description: Request Body
+        content:
+          application/json:
+            schema:
+              example:
+                {
+                  "title": "producto prueba",
+                  "description": "Este es un producto prueba",
+                  "code": "aaa1",
+                  "price": 50,
+                  "status": true,
+                  "category": "productos",
+                  "stock": 10,
+                  "thumbnail": [
+                    "path1",
+                    "path",
+                    "path3"
+                  ]
+                }
       responses:
         "200":
           description: "Success"
@@ -220,6 +292,21 @@ paths:
                     ]
                   }
                 }
+        "400":
+          description: "Bad Request"
+          content:
+            application/json:
+              example:
+                {
+                  "errors": [
+                    {
+                      "value": "643c0c7701d8fb15b03506ffa",
+                      "msg": "No es un id valido",
+                      "param": "pid",
+                      "location": "params"
+                    }
+                  ]
+                }
         "500":
           description: Internal Error Server
           content:
@@ -235,6 +322,8 @@ components:
     Products:
       type: object
       properties:
+        id:
+          type: ObjectId
         title:
           type: String
           required: true

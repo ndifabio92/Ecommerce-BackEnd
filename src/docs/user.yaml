@@ -4,6 +4,19 @@ paths:
       summary: Create User
       tags:
         - User
+      requestBody:
+        description: Request Body
+        content:
+          application/json:
+            schema:
+              example:
+                {
+                  "firstName": "test",
+                  "lastName": "test",
+                  "email": "test@gmail.com",
+                  "age": 30,
+                  "password": "Hola1234"
+                }
       responses:
         "200":
           description: "Success"
@@ -35,23 +48,23 @@ components:
       type: object
       properties:
         firstName:
-          type: String
+          type: string
           required: true
         lastName:
-          type: String
+          type: string
           required: true
         email:
-          type: String
+          type: string
           required: true
           unique: true
         age:
-          type: Number
+          type: number
           required: true
         password:
-          type: String
+          type: string
           required: true
         cart:
           type: ObjectId
         role:
-          type: String
+          type: string
           default: 'ROLE_USER'

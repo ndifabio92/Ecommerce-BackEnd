@@ -4,6 +4,16 @@ paths:
       summary: Login User
       tags:
         - Session
+      requestBody:
+        description: Request Body
+        content:
+          application/json:
+            schema:
+              example:
+                {
+                  "email": "test@gmail.com",
+                  "password": "Hola1234"
+                }
       responses:
         "200":
           description: "Success"
