@@ -1,0 +1,70 @@
+paths:
+  /api/signup/:
+    post:
+      summary: Create User
+      tags:
+        - User
+      requestBody:
+        description: Request Body
+        content:
+          application/json:
+            schema:
+              example:
+                {
+                  "firstName": "test",
+                  "lastName": "test",
+                  "email": "test@gmail.com",
+                  "age": 30,
+                  "password": "Hola1234"
+                }
+      responses:
+        "200":
+          description: "Success"
+          content:
+            application/json:
+              example:
+                {
+                  "status": "sucess",
+                  "msg": "Usuario creado",
+                  "user": {
+                    "id": "646564bb16c17838817c9fbc",
+                    "firstName": "test",
+                    "lastName": "test",
+                    "age": 30
+                  }
+                }
+        "500":
+          description: Internal Error Server
+          content:
+            application/json:
+              example:
+                {
+                  "error": "El email test@gmail.com ya se encuentra registrado."
+                }
+
+components:
+  schemas:
+    User:
+      type: object
+      properties:
+        firstName:
+          type: string
+          required: true
+        lastName:
+          type: string
+          required: true
+        email:
+          type: string
+          required: true
+          unique: true
+        age:
+          type: number
+          required: true
+        password:
+          type: string
+          required: true
+        cart:
+          type: ObjectId
+        role:
+          type: string
+          default: 'ROLE_USER'

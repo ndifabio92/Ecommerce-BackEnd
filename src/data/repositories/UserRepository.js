@@ -43,7 +43,12 @@ class UserRepository {
             return new UserEntity({
                 id: document._id,
                 password: document.password,
-                email: document.email
+                email: document.email,
+                firstName: document.firstName,
+                lastName: document.lastName,
+                age: document.age,
+                cart: document.cart,
+                role: document.role,
             });
         } catch (error) {
             console.error(error);
