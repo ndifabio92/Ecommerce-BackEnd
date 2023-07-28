@@ -1,8 +1,11 @@
 import express from 'express';
 import cors from 'cors';
 import cookieParser from "cookie-parser";
-import {productRoute, cartRoute, emailRoute, userRoute, sessionRoute} from '../routes/index.js';
+import {cartRoute, emailRoute, productRoute, sessionRoute, userRoute} from '../routes/index.js';
 import DbFactory from "../../data/factories/dbFactory.js";
+import swaggerOptions from "../../configuration/swaggerConfig.js";
+import swaggerJsdoc from "swagger-jsdoc"
+import swaggerUiExpress from 'swagger-ui-express'
 
 class AppExpress {
 
@@ -13,6 +16,7 @@ class AppExpress {
         this.connectDB();
         this.middlewares();
         this.routes();
+        this.swagger();
 
         if (AppExpress.instance) return AppExpress.instance;
 
@@ -37,6 +41,10 @@ class AppExpress {
         this.app.use('/api/signup', userRoute);
         this.app.use('/api/session', sessionRoute);
         this.app.use('/api/email', emailRoute);
+    }
+
+    swagger() {
+        this.app.use('/api/docs', swaggerUiExpress.serve, swaggerUiExpress.setup(swaggerJsdoc(swaggerOptions)));
     }
 
     start() {

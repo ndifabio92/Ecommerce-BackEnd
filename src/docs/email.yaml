@@ -1,0 +1,17 @@
+paths:
+  /api/email/:
+    post:
+      summary: Send Email
+      tags:
+        - Email
+      responses:
+        "200":
+          description: "Success"
+          content:
+            application/json:
+              example:
+                {
+                  "status": "success"
+                }
+        "500":
+          description: Internal Error Server

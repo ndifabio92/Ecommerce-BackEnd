@@ -9,21 +9,6 @@ class CartRepository {
             return new CartEntity({
                 id: document._id,
                 products: document.products
-                    // .map(item => {
-                    // const {id: product} = item;
-                    // return {
-                    //     id: product._id,
-                    //     quantity: item.quantity,
-                    //     title: product.title,
-                    //     description: product.description,
-                    //     code: product.code,
-                    //     price: product.price,
-                    //     status: product.status,
-                    //     stock: product.stock,
-                    //     category: product.category,
-                    //     thumbnail: product.thumbnail,
-                    // }
-                // }),
             })
         } catch (error) {
             console.error(error);
